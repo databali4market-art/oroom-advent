@@ -48,5 +48,5 @@ export const ADMIN_EMAILS: string[] = [
  */
 export const NEWSLETTER_CONSENT = {
   version: 'v1-2026-11',
-  text: 'Chci dostávat e-mailem novinky a nabídky Mobil Maják. Souhlas mohu kdykoli odvolat.',
+  text: 'Chci dostávat e-mailem novinky a nabídky OROOM Brno. Souhlas mohu kdykoli odvolat.',
 };

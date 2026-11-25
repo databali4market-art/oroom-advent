@@ -8,8 +8,7 @@ import { DoorGrid } from './components/DoorGrid';
 import { DoorModal } from './components/DoorModal';
 import { LoginDialog } from './components/LoginDialog';
 import { GiftsDrawer } from './components/GiftsDrawer';
-import { BeaconA, Celebrate, Drift, Lights, Logo, Snow } from './components/Decor';
-import { HeroArt } from './components/HeroArt';
+import { Celebrate, Lights, Logo, Snow } from './components/Decor';
 
 const EVE = Date.parse('2026-12-24T00:00:00+01:00');
 const draft = CONTENT_MODE !== 'live';
@@ -127,7 +126,7 @@ export default function App() {
     const url = new URL(location.origin + BASE);
     if (modalDay) url.searchParams.set('den', String(modalDay));
     try {
-      if (navigator.share) { await navigator.share({ title: 'Adventní kalendář Mobil Maják', text: '24 dní, 24 překvapení: nabídky, hry, tipy a soutěže až do Štědrého dne.', url: url.href }); return; }
+      if (navigator.share) { await navigator.share({ title: 'Adventní kalendář OROOM Brno', text: '24 dní, 24 překvapení: nabídky, hry, tipy a soutěže až do Štědrého dne.', url: url.href }); return; }
       await navigator.clipboard.writeText(url.href);
       notify('Odkaz je zkopírovaný. Pošlete ho dál.');
     } catch (e) { if ((e as Error).name !== 'AbortError') notify('Sdílení se nepodařilo. Odkaz zkopírujte z adresního řádku.'); }
@@ -155,18 +154,13 @@ export default function App() {
         </div>
       )}
 
-      <div className="utility">
-        <div className="wrap">
-          <nav aria-label="Odkazy na web"><a href={SHOP + 'servis/'}>Servis</a><a href={SHOP + 'kamenne-prodejny/'}>Kamenné prodejny</a><a href={SHOP + 'vykup/'}>Výkup</a><a href={SHOP + 'o-nas/'}>O nás</a></nav>
-          <span className="reg-pill">Získej 10 bodů za registraci</span>
-        </div>
-      </div>
       <header className="topbar">
         <div className="wrap">
-          <a href={SHOP} className="brand" aria-label="Mobil Maják – e-shop"><Logo /></a>
-          <a className="call" href={'tel:' + PHONE.replace(/\s/g, '')}><Phone size={22} /><span><b>{PHONE} <i>online</i></b><small>Zavolejte nám (Po–Pá 9–17)</small></span></a>
-          <nav className="actions" aria-label="Ovládání">
-            <button className="chip" onClick={share} aria-label="Sdílet kalendář"><Share2 size={16} /></button>
+          <nav className="actions left" aria-label="Sdílení">
+            <button className="chip" onClick={share} aria-label="Sdílet kalendář"><Share2 size={16} /><span>Sdílet</span></button>
+          </nav>
+          <a href={SHOP} className="brand" aria-label="OROOM Brno"><Logo /></a>
+          <nav className="actions right" aria-label="Ovládání">
             {user || DEMO_MODE ? (
               <button className="chip pink" onClick={() => setDrawer(true)}><Gift size={16} /><span>Moje dárky</span>{openedCount > 0 && <b className="badge">{openedCount}</b>}</button>
             ) : (
@@ -175,23 +169,20 @@ export default function App() {
           </nav>
         </div>
       </header>
-      <div className="mainnav"><div className="wrap"><a>Příslušenství</a><a>Použité telefony</a><a>Nové telefony</a><a>Servis</a><a>% Akce měsíce</a><a>Dárkové poukazy</a><span className="here">Adventní kalendář</span></div></div>
 
       {/* ------------------------------------------------------------- HERO */}
       <section className="hero">
         <Snow />
         <Lights className="hero-lights" count={22} />
-        <div className="wrap hero-grid">
-          <div className="hero-copy">
-            <div className="eyebrow light"><Snowflake size={15} /> Adventní kalendář 2026</div>
-            <h1><span className="hl">Advent</span><br />plný slev, her<br />a překvapení</h1>
-            <p>24 dní, 24 okének. Každý den o půlnoci se odemkne nová nabídka, hra, tip nebo soutěž. Odměny na vás čekají na pobočkách Mobil Maják.</p>
-            <div className="hero-cta">
-              <a href="#kalendar" className="btn pink big">{user || DEMO_MODE ? 'Ke kalendáři' : 'Vstoupit do kalendáře'} <ArrowRight size={18} /></a>
-              {!user && !DEMO_MODE && <button className="btn ghost" onClick={() => setLogin({ open: true })}><LogIn size={17} /> Přihlásit se</button>}
-            </div>
+        <div className="wrap hero-center">
+          <img className="hero-emblem" src={`${import.meta.env.BASE_URL}emblem.svg`} alt="" width="56" height="56" />
+          <div className="hero-kicker">Adventní kalendář <i>2026</i></div>
+          <h1>24 dní<br />překvapení pro dva</h1>
+          <p>Každý den o půlnoci se odemkne nové okénko: nabídka, hra, tip nebo soutěž. Odměny na vás čekají v OROOM Brno.</p>
+          <div className="hero-cta">
+            <a href="#kalendar" className="btn primary big">{user || DEMO_MODE ? 'Ke kalendáři' : 'Vstoupit do kalendáře'} <ArrowRight size={18} /></a>
+            {!user && !DEMO_MODE && <button className="btn ghost" onClick={() => setLogin({ open: true })}><LogIn size={17} /> Přihlásit se</button>}
           </div>
-          <HeroArt />
         </div>
         <div className="wrap countdown" aria-label="Odpočet do Štědrého dne">
           <div className="cd-label">Do Štědrého dne zbývá</div>
@@ -201,7 +192,6 @@ export default function App() {
             ))}
           </div>
         </div>
-        <Drift className="hero-drift" />
       </section>
 
       {/* --------------------------------------------------------- CALENDAR */}
@@ -210,7 +200,7 @@ export default function App() {
           <div className="cal-head">
             <div>
               <div className="eyebrow">Každý den jedno okénko</div>
-              <h2>Vyberte si <span className="hl">dnešní překvapení</span></h2>
+              <h2>Vyberte si <em>dnešní překvapení</em></h2>
             </div>
             <p>Nabídky na pobočkách, kvízy, užitečné tipy a tři soutěže o skvělé výhry. Co otevřete, to si pamatujeme u vašeho účtu.</p>
           </div>
@@ -245,16 +235,14 @@ export default function App() {
         </section>
 
         <section className="closing">
-          <Drift className="closing-drift" />
           <Snowflake size={30} />
-          <h2>Krásný advent přeje <span className="hl">tým Mobil Maják</span></h2>
+          <h2>Krásný advent přeje <em>tým OROOM Brno</em></h2>
         </section>
       </main>
 
       <footer className="footer">
-        <BeaconA className="footer-beacon" />
         <div className="wrap">
-          <Logo light />
+          <Logo />
           <div className="footer-links">
             <a href={SHOP} target="_blank" rel="noreferrer">E-shop ↗</a>
             <a href={BRANCHES_URL} target="_blank" rel="noreferrer">Kde nás najdete ↗</a>
@@ -264,9 +252,9 @@ export default function App() {
           </div>
           <div id="soukromi" className="privacy">
             <h3>Soukromí</h3>
-            <p>Správcem osobních údajů je {OPERATOR.name} (Mobil Maják), IČ {OPERATOR.ico}. Pro přihlášení a ukládání dat používáme službu Firebase (Google). Ukládáme váš e-mail a jméno z účtu Google, která okénka jste otevřeli, soutěžní odpovědi (u soutěže o nejhůř rozbitý displej i zaslanou fotku) a to, zda chcete dostávat novinky. Údaje slouží jen k provozu adventního kalendáře a vyhodnocení soutěží; e-mailem s novinkami vás oslovíme jen tehdy, pokud jste k tomu dali souhlas (odvolat ho můžete kdykoli v sekci Moje dárky). Údaje z kalendáře uchováváme do 31. 3. 2027 (soutěžní údaje 3 měsíce od vyhlášení výsledků), kontakty se souhlasem do jeho odvolání. Web nepoužívá analytické ani reklamní cookies. Více v <a href={PRIVACY_URL} target="_blank" rel="noreferrer">zásadách ochrany osobních údajů</a>.</p>
+            <p>Správcem osobních údajů je {OPERATOR.name} (OROOM Brno), IČ {OPERATOR.ico}. Pro přihlášení a ukládání dat používáme službu Firebase (Google). Ukládáme váš e-mail a jméno z účtu Google, která okénka jste otevřeli, soutěžní odpovědi (u soutěže o nejhůř rozbitý displej i zaslanou fotku) a to, zda chcete dostávat novinky. Údaje slouží jen k provozu adventního kalendáře a vyhodnocení soutěží; e-mailem s novinkami vás oslovíme jen tehdy, pokud jste k tomu dali souhlas (odvolat ho můžete kdykoli v sekci Moje dárky). Údaje z kalendáře uchováváme do 31. 3. 2027 (soutěžní údaje 3 měsíce od vyhlášení výsledků), kontakty se souhlasem do jeho odvolání. Web nepoužívá analytické ani reklamní cookies. Více v <a href={PRIVACY_URL} target="_blank" rel="noreferrer">zásadách ochrany osobních údajů</a>.</p>
           </div>
-          <small>© 2026 Mobil Maják · Provozovatel: {OPERATOR.name}, {OPERATOR.address}, IČ {OPERATOR.ico} · Okénka se odemykají o půlnoci (Europe/Prague)</small>
+          <small>© 2026 OROOM Brno · Provozovatel: {OPERATOR.name}, {OPERATOR.address}, IČ {OPERATOR.ico} · Okénka se odemykají o půlnoci (Europe/Prague)</small>
         </div>
       </footer>
 

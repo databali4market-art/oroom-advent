@@ -11,7 +11,7 @@ import type { Door } from './types';
 export const YEAR = 2026;
 
 export const BASE = import.meta.env.BASE_URL;
-export const SHOP = 'https://www.mobilmajak.cz/';
+export const SHOP = 'https://www.brno.oroom.cz/';
 export const SERVICE = 'https://servismajak.cz/';
 export const BRANCHES_URL = SERVICE + 'pobocky/';
 export const BATTERY_URL = SERVICE + 'zarizeni/mobilni-telefony';
@@ -19,16 +19,17 @@ const IMG = BASE + 'img/';
 
 /** Provozovatel kalendáře a pořadatel soutěží */
 export const OPERATOR = {
-  name: 'Codaruina s.r.o.',
-  address: 'Litovelská 118/12, 779 00 Olomouc – Nová Ulice',
-  ico: '04147537',
-  dic: 'CZ04147537',
-  email: 'obchod@mobilmajak.cz',
-  phone: '+420 601 009 001',
+  // TODO: doplnit údaje provozovatele OROOM Brno
+  name: 'DOPLNIT NÁZEV S.R.O.',
+  address: 'DOPLNIT ADRESU',
+  ico: 'DOPLNIT',
+  dic: 'DOPLNIT',
+  email: 'doplnit@oroom.cz',
+  phone: 'DOPLNIT',
 };
 export const RULES_URL = '?pravidla';
-export const PRIVACY_URL = 'https://www.mobilmajak.cz/Stranky/Ochrana-osobnich-udaju';
-export const PHONE = '601 009 001';
+export const PRIVACY_URL = 'https://www.brno.oroom.cz/'; // TODO: odkaz na zásady ochrany osobních údajů
+export const PHONE = 'DOPLNIT'; // TODO: telefon OROOM Brno
 
 export const CONTEST_DAYS = [5, 13, 19];
 
