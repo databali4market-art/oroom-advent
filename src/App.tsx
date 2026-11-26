@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, ArrowUpRight, Eye, Gift, LogIn, Share2, Snowflake, Send, Ticket, HelpCircle, DoorOpen } from 'lucide-react';
 import { GAMES, windowOf } from './content';
-import { CONTACT, PREVIEW_KEY, PRIVACY_URL, SHOP, SITE_URL, VOUCHERS_URL } from './config';
+import { CONTACT, NAHLED_BUILD, PREVIEW_KEY, PRIVACY_URL, SHOP, SITE_URL, VOUCHERS_URL } from './config';
 import { availableDay, plural } from './lib/time';
 import { backend } from './backend';
 import type { Progress, User } from './types';
@@ -33,7 +33,7 @@ function readPreview(): boolean {
 type View = { kind: 'day'; day: number } | { kind: 'game'; id: string; fromDay?: number };
 
 export default function App() {
-  const [preview, setPreview] = useState(readPreview);
+  const [preview, setPreview] = useState(() => NAHLED_BUILD || readPreview());
   const [now, setNow] = useState(() => Date.now());
   const today = availableDay(now);
   const max = preview ? 24 : today;
@@ -65,13 +65,13 @@ export default function App() {
 
   const openDoor = useCallback(async (day: number) => {
     if (day > max) { notify(`Okénko ${day} se odemkne ${day}. prosince o půlnoci.`); return; }
-    if (!user) { setLogin({ reason: 'Přihlaste se a otevřete okénko', pendingDay: day }); return; }
+    if (!user && !NAHLED_BUILD) { setLogin({ reason: 'Přihlaste se a otevřete okénko', pendingDay: day }); return; }
     if (!progress.opened[day]) {
       setOpening(day);
       await new Promise((r) => setTimeout(r, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 500));
       setOpening(null);
       setProgress((p) => ({ ...p, opened: { ...p.opened, [day]: new Date().toISOString() } }));
-      backend.markOpened(user, day, preview).catch(() => notify('Okénko se nepodařilo uložit k účtu. Zkuste to prosím znovu.'));
+      if (user) backend.markOpened(user, day, preview).catch(() => notify('Okénko se nepodařilo uložit k účtu. Zkuste to prosím znovu.'));
       setBurst((b) => b + 1);
     }
     setView({ kind: 'day', day });
@@ -122,7 +122,7 @@ export default function App() {
     notify(v ? 'Děkujeme! Novinky vám budeme posílat e-mailem.' : 'Dobře, nebudeme otravovat.');
     backend.answerNewsletterOffer(user, v).catch(() => notify('Nastavení se nepodařilo uložit.'));
   };
-  const status = !user ? 'Přihlaste se a začněte otevírat'
+  const status = !user && !NAHLED_BUILD ? 'Přihlaste se a začněte otevírat'
     : preview ? 'Režim náhledu – všechna okénka jsou odemčená'
     : max === 0 ? 'První okénko se odemkne 1. prosince o půlnoci'
     : max >= 24 ? 'Všechna okénka jsou odemčená. Krásné Vánoce!'
@@ -136,8 +136,8 @@ export default function App() {
     <>
       {preview && (
         <div className="preview-bar">
-          <Eye size={15} /> Náhled: všechna okénka odemčená
-          <button onClick={() => { try { sessionStorage.removeItem(SS + 'nahled'); } catch { /* */ } setPreview(false); }}>Ukončit</button>
+          <Eye size={15} /> {NAHLED_BUILD ? 'Náhled ke kontrole – vše odemčené, bez přihlášení' : 'Náhled: všechna okénka odemčená'}
+          {!NAHLED_BUILD && <button onClick={() => { try { sessionStorage.removeItem(SS + 'nahled'); } catch { /* */ } setPreview(false); }}>Ukončit</button>}
         </div>
       )}
 
@@ -149,7 +149,7 @@ export default function App() {
           <a href={SHOP} className="brand" aria-label="OROOM Brno"><Logo /></a>
           <nav className="actions right" aria-label="Poukazy">
             <a className="chip" href={VOUCHERS_URL} target="_blank" rel="noopener"><Ticket size={16} /><span>Poukaz</span></a>
-            {user ? (
+            {NAHLED_BUILD ? null : user ? (
               <button className="chip pink" onClick={() => setMine(true)}><Gift size={16} /><span>Moje okénka</span>{openedCount > 0 && <b className="badge">{openedCount}</b>}</button>
             ) : (
               <button className="chip pink" onClick={() => setLogin({})}><LogIn size={16} /><span>Přihlásit</span></button>
@@ -168,7 +168,7 @@ export default function App() {
           <p>Každý den o půlnoci se odemkne nové okénko: kvíz, hra, výzva nebo dárek. Hrajte spolu a objevte, která destinace OROOM je napsaná přímo pro vás.</p>
           <div className="hero-cta">
             <a href="#kalendar" className="btn primary big">{user ? 'Ke kalendáři' : 'Vstoupit do kalendáře'} <ArrowRight size={18} /></a>
-            {!user && <button className="btn ghost" onClick={() => setLogin({})}><LogIn size={16} /> Přihlásit se</button>}
+            {!user && !NAHLED_BUILD && <button className="btn ghost" onClick={() => setLogin({})}><LogIn size={16} /> Přihlásit se</button>}
           </div>
         </div>
         <div className="wrap countdown" aria-label="Odpočet do Štědrého dne">
@@ -192,7 +192,7 @@ export default function App() {
           </div>
           <div className="cal-bar">
             <div className="progress">
-              <span>{user ? <><b>{openedCount}</b> / 24 okének objeveno</> : 'Přihlaste se a začněte otevírat'}</span>
+              <span>{user || NAHLED_BUILD ? <><b>{openedCount}</b> / 24 okének objeveno</> : 'Přihlaste se a začněte otevírat'}</span>
               <div className="track"><i style={{ width: `${(openedCount / 24) * 100}%` }} /></div>
             </div>
             <span className="status">{status}</span>

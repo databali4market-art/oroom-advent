@@ -26,7 +26,9 @@ export const FIREBASE = {
   messagingSenderId: '924300012124',
   appId: '1:924300012124:web:8fb6d57f24d46cf4941499',
 };
-export const firebaseEnabled = () => !!FIREBASE.apiKey && !!FIREBASE.projectId;
+/** Náhledový build pro GitHub Pages (VITE_NAHLED=1, viz deploy.yml): vše odemčené, bez přihlášení, bez Firebase. */
+export const NAHLED_BUILD = import.meta.env.VITE_NAHLED === '1';
+export const firebaseEnabled = () => !NAHLED_BUILD && !!FIREBASE.apiKey && !!FIREBASE.projectId;
 
 /**
  * Kdo smí na stránce /?admin stahovat e-maily (Google účty, malými písmeny).

@@ -1,11 +1,12 @@
-# Nasazení na Firebase Hosting (projekt oroom-advent, tarif Spark).
-#   push do main      → TESTOVACÍ web (preview kanál „test“, adresa oroom-advent--test-….web.app, platí 30 dní)
-#   push do produkce  → OSTRÝ web (oroom-advent.web.app, ostrá doména kalendáře)
+# Nasazení – stejně jako u ostatních kalendářů (Firebase Hosting, tarif Spark, projekt oroom-advent):
+#   push do main      → TESTOVACÍ web https://oroom-test.web.app (druhý web v projektu)
+#                       + NÁHLED bez přihlášení na GitHub Pages (https://databali4market-art.github.io/oroom-advent/)
+#   push do produkce  → OSTRÝ web (ostrá doména kalendáře)
 # firestore.rules se nasazují v obou případech (testovací i ostrý web sdílí jednu databázi).
 # Potřebuje v GitHubu (Settings → Secrets and variables → Actions):
 #   - secret FIREBASE_SERVICE_ACCOUNT = JSON klíč servisního účtu (viz README, sekce Nasazení)
-#   - (volitelně) proměnné: FIREBASE_PROJECT_ID (výchozí oroom-advent), SITE_URL (ostrá adresa kalendáře), GA_ID (měření GA4)
-name: Nasazení na Firebase
+#   - (volitelně) proměnnou FIREBASE_PROJECT_ID, výchozí je oroom-advent
+name: Nasazení
 
 on:
   push:
@@ -17,14 +18,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  firebase:
     runs-on: ubuntu-latest
     env:
       HAS_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT != '' }}
       PROJECT: ${{ vars.FIREBASE_PROJECT_ID || 'oroom-advent' }}
+      TEST_SITE: ${{ vars.FIREBASE_TEST_SITE || 'oroom-test' }}
     steps:
       - if: env.HAS_KEY != 'true'
-        run: echo "::warning::Chybí secret FIREBASE_SERVICE_ACCOUNT – nasazení se přeskakuje (viz README)."
+        run: echo "::warning::Chybí secret FIREBASE_SERVICE_ACCOUNT – nasazení na Firebase se přeskakuje (viz README)."
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
@@ -39,12 +41,60 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
-      - name: Testovací web (preview kanál „test“)
-        if: env.HAS_KEY == 'true' && github.ref_name == 'main'
-        run: npx --yes firebase-tools@15 hosting:channel:deploy test --expires 30d --project "$PROJECT" --non-interactive
+      # Databázi Firestore (eur3) založí nasazení samo, pokud ještě neexistuje.
+      - name: Založení databáze Firestore (jen poprvé)
+        if: env.HAS_KEY == 'true'
+        continue-on-error: true
+        run: |
+          if npx --yes firebase-tools@15 firestore:databases:get "(default)" --project "$PROJECT" --non-interactive >/dev/null 2>&1; then
+            echo "Databáze už existuje."
+          else
+            npx --yes firebase-tools@15 firestore:databases:create "(default)" --location eur3 --project "$PROJECT" --non-interactive
+          fi
+      # Testovací web má vlastní hezkou adresu https://oroom-test.web.app (druhý web ve stejném projektu,
+      # na tarifu Spark zdarma). Při prvním nasazení se sám založí.
+      - name: Testovací web (oroom-test.web.app)
+        if: env.HAS_KEY == 'true' && github.ref_name != 'produkce'
+        run: |
+          npx --yes firebase-tools@15 hosting:sites:get "$TEST_SITE" --project "$PROJECT" --non-interactive >/dev/null 2>&1 \
+            || npx --yes firebase-tools@15 hosting:sites:create "$TEST_SITE" --project "$PROJECT" --non-interactive
+          jq --arg s "$TEST_SITE" '.hosting.site = $s' firebase.json > firebase.test.json
+          npx --yes firebase-tools@15 deploy --only hosting --config firebase.test.json --project "$PROJECT" --non-interactive
       - name: Ostrý web (live)
         if: env.HAS_KEY == 'true' && github.ref_name == 'produkce'
         run: npx --yes firebase-tools@15 deploy --only hosting --project "$PROJECT" --non-interactive
+      # Pravidla databáze: klíč potřebuje roli „Firebase Rules Admin“ (a Service Usage Consumer).
+      # Bez ní tenhle krok jen upozorní – pravidla se pak vkládají ručně: Firestore Database → Rules → Publish.
       - name: Pravidla databáze (firestore.rules)
         if: env.HAS_KEY == 'true'
+        continue-on-error: true
         run: npx --yes firebase-tools@15 deploy --only firestore:rules --project "$PROJECT" --non-interactive
+
+  # Náhled ke kontrole bez přihlášení (vše odemčené). Po spuštění kampaně lze smazat.
+  nahled:
+    if: github.ref_name == 'main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Sestavení náhledu
+        run: npm run build
+        env:
+          VITE_NAHLED: '1'
+          BASE_PATH: /oroom-advent/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v4
