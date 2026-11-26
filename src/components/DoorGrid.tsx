@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Check, Gamepad2, Gift, Lightbulb, Lock, Plane, Sparkles, Compass, HelpCircle } from 'lucide-react';
 import { windows, type WinType } from '../content';
-import { Lights } from './Decor';
 
 export const TYPE_CLASS: Record<WinType, string> = { Kvíz: 'quiz', Hra: 'game', Výzva: 'challenge', Bonus: 'bonus', Tip: 'tip', Finále: 'finale' };
 
@@ -31,7 +30,6 @@ export function DoorGrid({ max, opened, opening, onOpen }: Props) {
   const cols = useCols();
   return (
     <div className="phone">
-      <Lights className="phone-lights" count={14} />
       <div className="phone-bar" aria-hidden="true"><span>Adventní kalendář</span><span>Advent 2026</span></div>
       <div className="grid" style={{ ['--cols' as string]: cols }} role="list" aria-label="24 adventních okének">
         {windows.map((w, i) => {
@@ -50,8 +48,7 @@ export function DoorGrid({ max, opened, opening, onOpen }: Props) {
                 style={{ animationDelay: `${i * 24}ms` }}
               >
                 <span className="tile-num">{w.day}</span>
-                {!isOpen && <span className="bow" />}
-                <span className="tile-ico">{typeIcon(w.type, 26)}</span>
+                <span className="tile-ico">{typeIcon(w.type, 16)}</span>
                 {locked && <span className="tile-lock"><Lock size={12} /></span>}
                 {isOpen && <span className="tile-tick"><Check size={11} /></span>}
                 {today && <span className="tile-badge">dnes</span>}

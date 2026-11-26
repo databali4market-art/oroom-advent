@@ -50,10 +50,10 @@ export function Snow({ count = 55 }: { count?: number }) {
 /** Konfety při otevření okénka nebo splnění hry. */
 export function Celebrate({ burst }: { burst: number }) {
   if (!burst) return null;
-  const colors = ['#a40063', '#ffd873', '#fdf8e9', '#b1845e', '#d4a67f'];
+  const colors = ['#ffd873', '#d4a67f', '#b1845e', '#fdf8e9'];
   return (
     <div className="celebrate" key={burst} aria-hidden="true">
-      {Array.from({ length: 34 }, (_, i) => (
+      {Array.from({ length: 22 }, (_, i) => (
         <i key={i} style={{
           ['--x' as string]: `${(Math.cos(i * 2.4) * (120 + (i * 37) % 220)).toFixed(0)}px`,
           ['--y' as string]: `${(Math.sin(i * 2.4) * (90 + (i * 53) % 180) - 120).toFixed(0)}px`,

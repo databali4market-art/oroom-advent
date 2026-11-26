@@ -7,7 +7,7 @@ import { backend } from './backend';
 import type { Progress, User } from './types';
 import { shareLink } from './lib/share';
 import { DoorGrid, TYPE_CLASS } from './components/DoorGrid';
-import { Celebrate, Lights, Logo, Snow } from './components/Decor';
+import { Celebrate, Logo, Snow } from './components/Decor';
 import { Sheet } from './components/Sheet';
 import { Consent } from './components/Consent';
 import { LoginDialog } from './components/LoginDialog';
@@ -160,7 +160,6 @@ export default function App() {
 
       <section className="hero">
         <Snow />
-        <Lights className="hero-lights" count={22} />
         <div className="wrap hero-center">
           <img className="hero-emblem" src={`${import.meta.env.BASE_URL}emblem.svg`} alt="" width="56" height="56" />
           <div className="hero-kicker">Adventní kalendář <i>2026</i></div>
