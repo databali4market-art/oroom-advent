@@ -319,3 +319,36 @@ em { font-style: normal; font-family: var(--script); font-weight: 400; color: va
   .cd-time { gap: 12px; } .cd-time strong { font-size: 28px; } .cd-time div { min-width: 48px; } .countdown { padding: 16px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; } }
+
+/* ---------- přihlášení, účet, newsletter, admin ---------- */
+.login { display: grid; gap: 14px; }
+.btn.google { background: var(--cream); color: #2d1226; border-color: transparent; }
+.btn.google:hover { background: #fff; }
+.input-icon { position: relative; }
+.input-icon svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--gold-light); }
+input[type=email] { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--line); background: #2a0d25; color: var(--cream); font: inherit; }
+.input-icon input { padding-left: 42px; min-height: 50px; }
+.login-form { display: grid; gap: 10px; }
+.check { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; color: var(--soft); cursor: pointer; }
+.check input { margin-top: 3px; accent-color: var(--mag-2); width: 18px; height: 18px; flex: none; }
+.form-error { background: rgba(228,70,110,.16); color: #ffb3c6; border-radius: 10px; padding: 8px 12px; font-size: 14px; font-weight: 600; }
+.demo-note { background: rgba(255,216,115,.1); color: var(--yellow); padding: 8px 12px; border-radius: 10px; font-size: 12px; }
+.legal { font-size: 12px; color: rgba(255,255,255,.55); } .legal a { color: var(--cream); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.badge { background: var(--yellow); color: #150214; border-radius: 999px; font-size: 12px; min-width: 22px; height: 22px; display: grid; place-items: center; padding: 0 6px; }
+.drawer-user { color: var(--soft); font-size: 14px; }
+.mw-h { font-size: 15px; font-weight: 600; display: flex; justify-content: space-between; margin-top: 8px; } .mw-h span { color: var(--gold-light); }
+.gift-day { flex: none; width: 36px; height: 36px; border-radius: 12px; background: var(--btn-bg); display: grid; place-items: center; font-weight: 800; }
+.link { background: none; border: 0; padding: 0; color: var(--gold-light); text-decoration: underline; text-underline-offset: 3px; font-weight: 600; }
+.nl-offer { border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; background: rgba(21,2,20,.5); display: grid; gap: 8px; animation: pop .35s; }
+.nl-offer p { font-size: 13px; color: var(--soft); } .nl-offer small { font-size: 11.5px; color: rgba(255,255,255,.55); }
+.nl-actions { display: flex; flex-wrap: wrap; gap: 8px; } .nl-actions .btn { min-height: 42px; font-size: 12px; padding: 0 16px; }
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.admin { min-height: 100vh; display: grid; place-items: center; padding-block: 40px; }
+.admin-card { width: min(640px, 100%); background: linear-gradient(170deg, #3a1432, #2c0d25 60%); border: 1px solid var(--line); border-radius: 20px; padding: 28px; display: grid; gap: 14px; justify-items: start; }
+.admin-card h1 { font-size: 26px; }
+.admin-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; width: 100%; }
+.admin-stats div { border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; display: grid; }
+.admin-stats strong { font-size: 28px; color: var(--yellow); } .admin-stats span { font-size: 13px; color: var(--soft); }
+.admin-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.muted { color: var(--soft); }

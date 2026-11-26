@@ -9,7 +9,7 @@ export function Consent() {
   const set = (v: 'yes' | 'no') => { setConsent(v); setState(v); };
   return (
     <div className="consent" role="dialog" aria-label="Cookies">
-      <p>Kalendář nesbírá osobní údaje. S vaším souhlasem měříme jen souhrnnou návštěvnost (které okénko se otevřelo). <a href={PRIVACY_URL} target="_blank" rel="noopener">Zásady ochrany osobních údajů</a></p>
+      <p>S vaším souhlasem měříme jen souhrnnou návštěvnost (které okénko se otevřelo, který kvíz se dokončil). Odpovědi z her se neukládají. <a href={PRIVACY_URL} target="_blank" rel="noopener">Zásady ochrany osobních údajů</a></p>
       <div><button className="btn ghost" onClick={() => set('no')}>Odmítnout</button><button className="btn primary" onClick={() => set('yes')}>Souhlasím</button></div>
     </div>
   );

@@ -1,0 +1,26 @@
+rules_version = '2';
+// Pravidla pro Firestore. Nasazují se automaticky s webem (firebase.json).
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Správci, kteří na /?admin stahují kontakty. Stejný seznam je v src/config.ts (ADMIN_EMAILS).
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email.lower() in [
+          'databali4market@gmail.com'
+        ];
+    }
+
+    // Profil a postup uživatele: každý čte a zapisuje jen svůj dokument, správce čte všechny.
+    match /users/{uid} {
+      allow read: if isAdmin() || (request.auth != null && request.auth.uid == uid);
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['email', 'name', 'newsletter', 'newsletterAt', 'newsletterConsent',
+             'newsletterRevokedAt', 'newsletterAsked', 'createdAt', 'lastSeenAt', 'opened', 'openedPreview'])
+        && request.resource.data.email == request.auth.token.email.lower()
+        && (!('newsletter' in request.resource.data) || request.resource.data.newsletter is bool);
+      allow delete: if false;
+    }
+  }
+}

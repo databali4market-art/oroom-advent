@@ -1,7 +1,7 @@
 # Nasazení na Firebase Hosting (projekt oroom-advent, tarif Spark).
 #   push do main      → TESTOVACÍ web (preview kanál „test“, adresa oroom-advent--test-….web.app, platí 30 dní)
 #   push do produkce  → OSTRÝ web (oroom-advent.web.app, ostrá doména kalendáře)
-# Kalendář je čistě statický web (bez databáze a přihlašování).
+# firestore.rules se nasazují v obou případech (testovací i ostrý web sdílí jednu databázi).
 # Potřebuje v GitHubu (Settings → Secrets and variables → Actions):
 #   - secret FIREBASE_SERVICE_ACCOUNT = JSON klíč servisního účtu (viz README, sekce Nasazení)
 #   - (volitelně) proměnné: FIREBASE_PROJECT_ID (výchozí oroom-advent), SITE_URL (ostrá adresa kalendáře), GA_ID (měření GA4)
@@ -45,3 +45,6 @@ jobs:
       - name: Ostrý web (live)
         if: env.HAS_KEY == 'true' && github.ref_name == 'produkce'
         run: npx --yes firebase-tools@15 deploy --only hosting --project "$PROJECT" --non-interactive
+      - name: Pravidla databáze (firestore.rules)
+        if: env.HAS_KEY == 'true'
+        run: npx --yes firebase-tools@15 deploy --only firestore:rules --project "$PROJECT" --non-interactive

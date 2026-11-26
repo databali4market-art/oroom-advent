@@ -17,6 +17,32 @@ export const PLAYLIST_URL = '';
 /** Poukazy pro Karlovy Vary (St. Petersburg, Havana). TODO: odkaz doplní František. */
 export const KV_VOUCHERS_URL = '';
 
+/** Firebase projekt oroom-advent (hodnoty nejsou tajné). */
+export const FIREBASE = {
+  apiKey: 'AIzaSyD_BykRR11TQqY5UnxzD3JNTO4780Tysd4',
+  authDomain: 'oroom-advent.firebaseapp.com',
+  projectId: 'oroom-advent',
+  storageBucket: 'oroom-advent.firebasestorage.app',
+  messagingSenderId: '924300012124',
+  appId: '1:924300012124:web:8fb6d57f24d46cf4941499',
+};
+export const firebaseEnabled = () => !!FIREBASE.apiKey && !!FIREBASE.projectId;
+
+/**
+ * Kdo smí na stránce /?admin stahovat e-maily (Google účty, malými písmeny).
+ * Stejný seznam MUSÍ být i ve firestore.rules (funkce isAdmin), jinak databáze data nevydá.
+ */
+export const ADMIN_EMAILS: string[] = ['databali4market@gmail.com'];
+
+/**
+ * Znění souhlasu s newsletterem. Ukládá se ke každému kontaktu spolu s datem souhlasu (kvůli GDPR).
+ * Když text změníte, zvyšte verzi.
+ */
+export const NEWSLETTER_CONSENT = {
+  version: 'v1-2026-11',
+  text: 'Chci dostávat e-mailem novinky a nabídky OROOM Brno. Souhlas mohu kdykoli odvolat.',
+};
+
 export const SHOP = 'https://www.brno.oroom.cz/';
 export const VOUCHERS_URL = SHOP + 'vouchers';
 export const PRIVACY_URL = SHOP + 'privacy-policy';
