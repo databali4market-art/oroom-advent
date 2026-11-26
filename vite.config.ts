@@ -1,10 +1,17 @@
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// Web běží na vlastní subdoméně (TODO-domena) v kořeni, proto je base '/'.
-// Při nasazení do podsložky (např. GitHub Pages) nastavte BASE_PATH=/nazev-repa/ .
+const SITE = (process.env.VITE_SITE_URL || 'https://advent.oroom.cz').replace(/\/$/, '');
+
+/** OG obrázek musí mít absolutní adresu (SITE_URL z prostředí). */
+const ogImage = (): Plugin => ({
+  name: 'og-image',
+  transformIndexHtml: (html) => html.replace('content="/og/indie.jpg"', `content="${SITE}/og/indie.jpg"`),
+});
+
+// Kalendář běží v kořeni vlastní (sub)domény, proto je base '/'.
 export default defineConfig({
   base: process.env.BASE_PATH ?? '/',
-  plugins: [react()],
+  plugins: [react(), ogImage()],
   build: { chunkSizeWarningLimit: 900 },
 });

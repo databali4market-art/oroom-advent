@@ -1,10 +1,10 @@
 # Nasazení na Firebase Hosting (projekt oroom-advent, tarif Spark).
 #   push do main      → TESTOVACÍ web (preview kanál „test“, adresa oroom-advent--test-….web.app, platí 30 dní)
-#   push do produkce  → OSTRÝ web (oroom-advent.web.app, advent.mobilmajak.cz)
-# firestore.rules se nasazují v obou případech (testovací i ostrý web sdílí jednu databázi).
+#   push do produkce  → OSTRÝ web (oroom-advent.web.app, ostrá doména kalendáře)
+# Kalendář je čistě statický web (bez databáze a přihlašování).
 # Potřebuje v GitHubu (Settings → Secrets and variables → Actions):
 #   - secret FIREBASE_SERVICE_ACCOUNT = JSON klíč servisního účtu (viz README, sekce Nasazení)
-#   - (volitelně) proměnnou FIREBASE_PROJECT_ID, výchozí je oroom-advent
+#   - (volitelně) proměnné: FIREBASE_PROJECT_ID (výchozí oroom-advent), SITE_URL (ostrá adresa kalendáře), GA_ID (měření GA4)
 name: Nasazení na Firebase
 
 on:
@@ -32,6 +32,9 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          VITE_SITE_URL: ${{ vars.SITE_URL }}
+          VITE_GA_ID: ${{ vars.GA_ID }}
       - if: env.HAS_KEY == 'true'
         uses: google-github-actions/auth@v2
         with:
@@ -42,6 +45,3 @@ jobs:
       - name: Ostrý web (live)
         if: env.HAS_KEY == 'true' && github.ref_name == 'produkce'
         run: npx --yes firebase-tools@15 deploy --only hosting --project "$PROJECT" --non-interactive
-      - name: Pravidla databáze (firestore.rules)
-        if: env.HAS_KEY == 'true'
-        run: npx --yes firebase-tools@15 deploy --only firestore:rules --project "$PROJECT" --non-interactive

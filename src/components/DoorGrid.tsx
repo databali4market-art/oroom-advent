@@ -1,22 +1,20 @@
 import { useEffect, useState } from 'react';
-import { Check, Gamepad2, Gift, Lightbulb, Lock, PartyPopper, Percent, Trophy } from 'lucide-react';
-import type { DoorType } from '../types';
-import { doors } from '../content';
+import { Check, Gamepad2, Gift, Lightbulb, Lock, Plane, Sparkles, Compass, HelpCircle } from 'lucide-react';
+import { windows, type WinType } from '../content';
 import { Lights } from './Decor';
 
-export const typeIcon = (t?: DoorType, size = 20) => {
-  switch (t) {
-    case 'offer': return <Percent size={size} />;
-    case 'game': return <Gamepad2 size={size} />;
-    case 'contest': return <Trophy size={size} />;
-    case 'finale': return <PartyPopper size={size} />;
-    case 'tip': return <Lightbulb size={size} />;
-    default: return <Gift size={size} />;
-  }
-};
+export const TYPE_CLASS: Record<WinType, string> = { Kvíz: 'quiz', Hra: 'game', Výzva: 'challenge', Bonus: 'bonus', Tip: 'tip', Finále: 'finale' };
 
-export const LABELS: Record<DoorType, string> = {
-  offer: 'Nabídka', game: 'Hra', tip: 'Tip', contest: 'Soutěž', finale: 'Finále',
+export const typeIcon = (t: WinType, size = 20) => {
+  switch (t) {
+    case 'Kvíz': return <HelpCircle size={size} />;
+    case 'Hra': return <Gamepad2 size={size} />;
+    case 'Výzva': return <Compass size={size} />;
+    case 'Bonus': return <Gift size={size} />;
+    case 'Tip': return <Lightbulb size={size} />;
+    case 'Finále': return <Sparkles size={size} />;
+    default: return <Plane size={size} />;
+  }
 };
 
 function useCols() {
@@ -26,44 +24,39 @@ function useCols() {
   return cols;
 }
 
-interface Props {
-  max: number;
-  opened: Map<number, DoorType | undefined>;
-  opening: number | null;
-  onOpen: (day: number, el: HTMLElement) => void;
-}
+interface Props { max: number; opened: Set<number>; opening: number | null; onOpen: (day: number) => void }
 
-/** 24 okének jako ikony na displeji telefonu. */
+/** 24 okének jako zabalené dárky. */
 export function DoorGrid({ max, opened, opening, onOpen }: Props) {
   const cols = useCols();
   return (
     <div className="phone">
       <Lights className="phone-lights" count={14} />
-      <div className="phone-bar" aria-hidden="true"><i className="notch" /><span>Adventní kalendář</span><span>Advent 2026</span></div>
+      <div className="phone-bar" aria-hidden="true"><span>Adventní kalendář</span><span>Advent 2026</span></div>
       <div className="grid" style={{ ['--cols' as string]: cols }} role="list" aria-label="24 adventních okének">
-        {doors.map((d, i) => {
-          const isOpen = opened.has(d.day);
-          const locked = d.day > max;
-          const today = d.day === max && !isOpen;
+        {windows.map((w, i) => {
+          const locked = w.day > max;
+          const isOpen = !locked && opened.has(w.day);
+          const today = w.day === max && !isOpen;
           const state = isOpen ? 'opened' : locked ? 'locked' : 'available';
-          const label = `Okénko ${d.day}${locked ? ', odemkne se ' + d.day + '. prosince' : isOpen ? ', otevřené' : ', otevřít'}`;
+          const label = `Okénko ${w.day}${locked ? ', odemkne se ' + w.day + '. prosince' : isOpen ? ', otevřené' : ', otevřít'}`;
           return (
-            <div role="listitem" key={d.day} className="tile-slot">
+            <div role="listitem" key={w.day} className="tile-slot">
               <button
-                className={`tile t-${d.type} ${state}${today ? ' today' : ''}${opening === d.day ? ' opening' : ''}`}
+                className={`tile t-${TYPE_CLASS[w.type]} ${state}${today ? ' today' : ''}${opening === w.day ? ' opening' : ''}`}
                 aria-label={label}
                 aria-disabled={locked}
-                onClick={(e) => onOpen(d.day, e.currentTarget)}
+                onClick={() => onOpen(w.day)}
                 style={{ animationDelay: `${i * 24}ms` }}
               >
-                <span className="tile-num">{d.day}</span>
+                <span className="tile-num">{w.day}</span>
                 {!isOpen && <span className="bow" />}
-                <span className="tile-ico">{typeIcon(d.type, 26)}</span>
+                <span className="tile-ico">{typeIcon(w.type, 26)}</span>
                 {locked && <span className="tile-lock"><Lock size={12} /></span>}
                 {isOpen && <span className="tile-tick"><Check size={11} /></span>}
                 {today && <span className="tile-badge">dnes</span>}
               </button>
-              <span className="tile-label">{locked ? d.day + '. 12.' : LABELS[d.type]}</span>
+              <span className="tile-label">{locked ? w.day + '. 12.' : w.type}</span>
             </div>
           );
         })}

@@ -7,12 +7,13 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc"
+    "typecheck": "tsc",
+    "prebuild": "node tools/share-pages.mjs"
   },
   "dependencies": {
     "@fontsource-variable/montserrat": "^5.3.0",
     "@fontsource/italianno": "^5.3.0",
-    "firebase": "^11.10.0",
+    "@fontsource/lora": "^5.3.0",
     "lucide-react": "^0.511.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"

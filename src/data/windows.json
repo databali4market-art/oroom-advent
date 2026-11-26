@@ -1,0 +1,170 @@
+[
+ {
+  "day": 1,
+  "type": "Kvíz",
+  "title": "Kam spolu vyrazíte?",
+  "text": "Advent začíná. A s ním 24 večerů jen pro vás dva. Šest otázek vám prozradí, která destinace OROOM je napsaná přímo pro vás. Odpovídáte spolu. Hádat se o odpověď je povoleno.",
+  "cta": "Spustit kvíz → na výsledku: Darovat tento příběh · Prozkoumat pokoj · Sdílet s partnerem"
+ },
+ {
+  "day": 2,
+  "type": "Hra",
+  "title": "Pravda, nebo výzva?",
+  "text": "Klasika, kterou jste naposledy hráli na táboře. Tentokrát bez publika. Otočte kartu, kdo začne, si určete sami. Dnešní balíček je romantický. Zatím.",
+  "cta": "Otočit kartu"
+ },
+ {
+  "day": 3,
+  "type": "Výzva",
+  "title": "Kdo najde poklad?",
+  "text": "Tortuga – Přístav hříchů. Dnes večer jste piráti. Jeden z vás schová doma poklad: čokoládu, vzkaz, nebo sám sebe. Ten druhý hledá jen podle nápověd „přihořívá“ a „mrzne“. Za každé „mrzne“ zaplatí hledač daň podle uvážení kapitána. Kdo poklad najde, rozhoduje o zbytku večera. Skutečný přístav hříchů s rumem, vířivkou pro dva a šermem na vás čeká u nás.",
+  "cta": "Darovat Tortugu"
+ },
+ {
+  "day": 4,
+  "type": "Bonus",
+  "title": "Dárek, který vypadá jako letenka",
+  "text": "Poukaz OROOM vám přijde do e-mailu. Pod stromečkem by se ale ztratil. Proto si k němu stáhněte letenku, dopište jména a destinaci a zabalte ji. Boarding začíná ve chvíli, kdy ji obdarovaný rozbalí.",
+  "cta": "Stáhnout letenku · Vybrat poukaz"
+ },
+ {
+  "day": 5,
+  "type": "Hra",
+  "title": "Dnes večer? Nechte to na nás.",
+  "text": "Sobota a žádný plán. Klikněte a generátor vám vylosuje rande: co, kde a jedno pravidlo navíc. Nelíbí se vám? Klikněte znovu. Pravidlo ale platí vždycky.",
+  "cta": "Vylosovat rande"
+ },
+ {
+  "day": 6,
+  "type": "Hra",
+  "title": "Hodní, nebo zlobiví?",
+  "text": "Mikuláš se ptá a vy odpovídáte. Andělské karty, nebo čertovské? Vyberte si balíček. Kdo celý rok zlobil, ví, kam si ho čert odnese.",
+  "cta": "Andělé · Čerti"
+ },
+ {
+  "day": 7,
+  "type": "Bonus",
+  "title": "800 Kč od nás. Jen 48 hodin.",
+  "text": "Do úterý do půlnoci si vyberte poukaz v jakékoli hodnotě, v košíku zadejte kód ADVENT800 a zaplatíte o 800 Kč méně. Večer pro dva, o kterém jste mluvili, je zase o kus blíž.",
+  "cta": "Zkopírovat kód · Vybrat poukaz"
+ },
+ {
+  "day": 8,
+  "type": "Kvíz",
+  "title": "Jak dobře se znáte?",
+  "text": "Myslíte, že toho druhého znáte nazpaměť? Jeden odpovídá za sebe, druhý hádá. Pak si role prohodíte. Osm otázek, jeden telefon a žádné napovídání.",
+  "cta": "Začít kolo 1"
+ },
+ {
+  "day": 9,
+  "type": "Tip",
+  "title": "Dárek bez stresu",
+  "text": "Darujte zážitek. Termín nechte na později. Poukaz OROOM přijde do e-mailu pár minut po zaplacení a jeho platnost je neomezená. Destinaci i termín si vyberete spolu. Do pokoje vás pustí jen kód ve dveřích, soukromí máte od příjezdu až po odjezd.",
+  "cta": "Vybrat poukaz"
+ },
+ {
+  "day": 10,
+  "type": "Výzva",
+  "title": "Havana u vás v obýváku",
+  "text": "Dnes vás vezmeme na Kubu, aniž byste vstali z gauče. Namíchejte si Cuba Libre, pusťte si náš playlist a oblečte se, jako by venku bylo třicet stupňů. Poslední pravidlo: kdo první vstane z gauče, plní přání toho druhého. Celý příběh na vás čeká u nás: kubánská barmanka, americký špion a opuštěný bar na ostrůvku u Kuby. Venku se zvedá bouře a nic není tak, jak se zdá.",
+  "cta": "Pustit playlist · Darovat Havanu"
+ },
+ {
+  "day": 11,
+  "type": "Výzva",
+  "title": "Vyšší karta vládne",
+  "text": "St. Petersburg – Pravidla moci. Vezměte balíček karet a každý si táhněte jednu. Vyšší karta určuje pravidla hry na příští půlhodinu: co, kde a jak dlouho. Oba ale můžete kdykoliv říct stop. Skutečná moc je v tom, že si ji navzájem dovolíte. Pak táhnete znovu. U nás k pravidlům moci patří zlatá klec Řádu, sekt a lechtivý blackjack.",
+  "cta": "Darovat St. Petersburg (Brno) · (Karlovy Vary)"
+ },
+ {
+  "day": 12,
+  "type": "Hra",
+  "title": "Rande za 20 minut",
+  "text": "Nádobí počká a hlídání nepotřebujete. Máte dvacet minut jen pro sebe? Generátor vám vylosuje krátké rande, na které nemusíte nikam chodit.",
+  "cta": "Vylosovat rande"
+ },
+ {
+  "day": 13,
+  "type": "Bonus",
+  "title": "Všední večer, který stojí za to",
+  "text": "Pondělí, úterý, středa. Dny, kdy se nic neděje. Když u nás strávíte noc od neděle do čtvrtka kdykoliv do konce února, odjíždíte až v poledne. Ráno nikam nespěcháte a příběh může pokračovat. Při placení po pobytu stačí říct heslo ADVENT12. Ať je ten všední večer všechno, jen ne všední.",
+  "cta": "Rezervovat všední večer"
+ },
+ {
+  "day": 14,
+  "type": "Hra",
+  "title": "Už jste se rozehřáli?",
+  "text": "Tenhle balíček není pro ty, kdo se červenájí. Nebo možná právě pro ně. Karty čtěte potichu, odpovídejte nahlas. Hrajte jen to, co vás baví oba. Každou kartu můžete přeskočit.",
+  "cta": "Otočit kartu"
+ },
+ {
+  "day": 15,
+  "type": "Výzva",
+  "title": "Rituál pro dva",
+  "text": "Indie – Zakázaná láska. Dnes večer zpomalte. Uvařte si čaj, zhasněte a zapalte svíčku. Jeden z vás deset minut pomalu masíruje toho druhého, beze slov. Pak si role vyměníte. Kdo promluví první, prozradí jedno své tajné přání. Zbytek rituálu, zlatou vanu, vonné oleje a čaj s poupaty růží, najdete u nás.",
+  "cta": "Darovat Indii · Stáhnout letenku"
+ },
+ {
+  "day": 16,
+  "type": "Výzva",
+  "title": "Tři věty",
+  "text": "Dnes žádná hra. Vezměte papír a každý napište tři věty, které jste tomu druhému dlouho neřekli. Vyměňte si je. Nahlas číst nemusíte. Ale můžete.",
+  "cta": "Zítra další okénko"
+ },
+ {
+  "day": 17,
+  "type": "Výzva",
+  "title": "A pak?",
+  "text": "Persie – Tisíc a jedna noc. Šeherezáda přežila tisíc nocí jen proto, že příběh nikdy nedopověděla. Dnes vypráví jeden z vás: jak jste se poznali, ale jako pohádku z pouště. Ten druhý smí kdykoli říct „a pak?“ a vypravěč musí přidat detail, který mu tehdy na tom druhém vzal dech. Kdo usne první, prohrál. Pokračování s orientální večeří a houpací sítí pod hvězdami najdete u nás.",
+  "cta": "Darovat Persii"
+ },
+ {
+  "day": 18,
+  "type": "Bonus",
+  "title": "Psst. Tajná obálka",
+  "text": "Vyberte pokoj a stáhněte si tajnou obálku: věnování pro obdarovaného a první indicii z příběhu. Vložte ji k poukazu. Pozná, že se něco chystá. Jen neví co.",
+  "cta": "Vybrat pokoj a stáhnout obálku"
+ },
+ {
+  "day": 19,
+  "type": "Hra",
+  "title": "Rande venku",
+  "text": "Zima venku, teplo uvnitř. Vylosujte si rande, na které se musíte obléknout. Domů se vraťte, až vám zmrznou nosy.",
+  "cta": "Vylosovat rande"
+ },
+ {
+  "day": 20,
+  "type": "Kvíz",
+  "title": "Jak dobře se znáte? Kolo 2",
+  "text": "Kolo 1 byla rozcvička. Dnes přijdou otázky, které si v běžném týdnu nepoložíte. Kdo vyhraje, vybírá pokoj na příští rande.",
+  "cta": "Začít kolo 2"
+ },
+ {
+  "day": 21,
+  "type": "Výzva",
+  "title": "Tajná mise",
+  "text": "Japonsko – Tajemství klanů stojí na tajných instrukcích. Vyzkoušejte si je doma. Každý napíše na papírek tajnou misi pro toho druhého, třeba „Do večera mi třikrát nenápadně pošeptej kompliment.“ Mise musí být příjemná pro oba a splnitelná do konce večera. Papírky si vyměňte a neukazujte. Kdo prokoukne misi toho druhého, vyhrává. Kdo tu svou splní neodhalen, vybírá, kde večer skončí. Skutečné instrukce klanu, zenová zahrada a vana ofuro čekají u nás.",
+  "cta": "Darovat Japonsko"
+ },
+ {
+  "day": 22,
+  "type": "Hra",
+  "title": "Vánoční pravidla",
+  "text": "A pravidla? Ta si určujete sami. Poslední balíček karet na svátky, kdy je doma plno, ale chvilka jen pro vás dva se vždycky najde.",
+  "cta": "Otočit kartu"
+ },
+ {
+  "day": 23,
+  "type": "Tip",
+  "title": "Na poslední chvíli",
+  "text": "Dárek na poslední chvíli. Ne zážitek na poslední chvíli. Poukaz máte v e-mailu za pár minut, letenku vytisknete ještě dnes večer.",
+  "cta": "Vybrat poukaz · Stáhnout letenku"
+ },
+ {
+  "day": 24,
+  "type": "Finále",
+  "title": "Štědrý večer jen pro vás dva",
+  "text": "Krásné Vánoce. Dárek od nás: všechny karty Pravdy, nebo výzvy a generátor rande vám zůstávají odemčené celý rok. A až budete po svátcích přemýšlet, kam spolu vyrazit, vyberte si destinaci. Boarding začíná za dveřmi OROOM.",
+  "cta": "Otevřít všechny hry"
+ }
+]

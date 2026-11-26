@@ -1,0 +1,44 @@
+{
+ "indie": {
+  "name": "Indie",
+  "sub": "Zakázaná láska",
+  "headline": "Láska, která se nesmí, chutná nejvíc.",
+  "text": "Vás dva baví to, co se nesmí. V Indii jeden z vás vládne a ten druhý mu plní přání. Jen do chvíle, než se role otočí. Zlatá vana, tantra masáž s vonnými oleji, čajový rituál s poupaty růží a poklad ukrytý za falešnou zdí.",
+  "cta": "Darovat Indii"
+ },
+ "havana": {
+  "name": "Havana",
+  "sub": "Kubánské pokušení",
+  "headline": "Rytmus, rum a žádné zábrany.",
+  "text": "Vy dva nepotřebujete ticho, potřebujete hudbu. Kubánská barmanka, americký špion a opuštěný bar, kde nic není tak, jak se zdá. Drinky na celý večer, postel zavěšená na lanech a polaroidy s úkoly.",
+  "cta": "Darovat Havanu"
+ },
+ "japonsko": {
+  "name": "Japonsko",
+  "sub": "Tajemství klanů",
+  "headline": "Každý z vás ví něco, co ten druhý ne.",
+  "text": "Milujete hry, napětí a zvraty. V Japonsku vás čeká mise plná intrik, zenová zahrada, vana ofuro a matcha. Každý dostane vlastní tajné instrukce. Vydržíte je nevyzradit?",
+  "cta": "Darovat Japonsko"
+ },
+ "petersburg": {
+  "name": "St. Petersburg",
+  "sub": "Pravidla moci",
+  "headline": "Někdo rozkazuje. Někdo poslouchá.",
+  "text": "Máte rádi jasná pravidla. A ještě radši je porušujete. Jako Vyvolení tajného Řádu projdete zkouškami až na vrchol. Sekt, zlatá klec Řádu a lechtivý blackjack. Pravidla moci ale píšete vy dva.",
+  "cta": "Darovat St. Petersburg"
+ },
+ "persie": {
+  "name": "Persie",
+  "sub": "Tisíc a jedna noc",
+  "headline": "Jedna noc, která vydá za tisíc.",
+  "text": "Nikam nespěcháte. V Persii se potkáte ve stanu uprostřed pouštní bouře. Orientální večeře na pokoji, perský čajový rituál, houpací síť pod hvězdami a víc než 20 romantických i pikantních aktivit.",
+  "cta": "Darovat Persii"
+ },
+ "tortuga": {
+  "name": "Tortuga",
+  "sub": "Přístav hříchů",
+  "headline": "Ona cizinka, on korzár. Zhřeší oba.",
+  "text": "Vy dva jste dobrodruzi. Tortuga je náš nejžádanější příběh: mazaná cizinka, protřelý korzár a ztracený poklad. Karibský rum, vířivka pro dva, šerm a pranýř. Kdo koho okrade?",
+  "cta": "Darovat Tortugu"
+ }
+}

@@ -1,0 +1,160 @@
+{
+ "PnV 1 romantický": [
+  {
+   "t": "Pravda",
+   "text": "Kdy jsi mě poprvé chtěl(a) políbit?"
+  },
+  {
+   "t": "Výzva",
+   "text": "Řekni mi do ucha, co na mně máš nejradši."
+  },
+  {
+   "t": "Pravda",
+   "text": "Které naše rande bys chtěl(a) zažít znovu?"
+  },
+  {
+   "t": "Výzva",
+   "text": "Zatančete si spolu jednu písničku. Bez hudby."
+  },
+  {
+   "t": "Pravda",
+   "text": "Co sis o mně myslel(a), když jsme se poprvé viděli?"
+  },
+  {
+   "t": "Výzva",
+   "text": "Dívejte se na sebe minutu beze slova. Kdo se první zasměje, plní přání."
+  },
+  {
+   "t": "Pravda",
+   "text": "Na co se se mnou nejvíc těšíš příští rok?"
+  },
+  {
+   "t": "Výzva",
+   "text": "Napiš mi zprávu, kterou si smím přečíst až zítra ráno."
+  },
+  {
+   "t": "Konec",
+   "text": "Tohle byla rozcvička. Celý večer s příběhem na vás čeká u nás. → Vybrat poukaz"
+  }
+ ],
+ "PnV 2 Andělé": [
+  {
+   "t": "Pravda",
+   "text": "Za co se mi chceš omluvit, ale ještě jsi to neudělal(a)?"
+  },
+  {
+   "t": "Výzva",
+   "text": "Masíruj mi ramena, dokud neřeknu dost."
+  },
+  {
+   "t": "Pravda",
+   "text": "Co pro mě uděláš, aniž bych o to musel(a) žádat?"
+  },
+  {
+   "t": "Výzva",
+   "text": "Zítra ráno připravíš snídani. Do postele."
+  },
+  {
+   "t": "Konec",
+   "text": "Andělé si zaslouží odměnu. Celý večer jen pro vás dva najdete u nás. → Vybrat poukaz"
+  }
+ ],
+ "PnV 2 Čerti": [
+  {
+   "t": "Pravda",
+   "text": "Co jsi letos provedl(a) a ještě jsi mi to neřekl(a)?"
+  },
+  {
+   "t": "Výzva",
+   "text": "Zašeptej mi, za co bych tě měl(a) potrestat."
+  },
+  {
+   "t": "Pravda",
+   "text": "Které pravidlo bys se mnou nejradši porušil(a)?"
+  },
+  {
+   "t": "Výzva",
+   "text": "Dalších deset minut se mě nesmíš dotknout. Já tebe ano."
+  },
+  {
+   "t": "Konec",
+   "text": "Zlobivé si čert odnáší do Tortugy. → Darovat Tortugu"
+  }
+ ],
+ "PnV 3 odvážnější": [
+  {
+   "t": "Pravda",
+   "text": "Který sen o nás sis nikdy netroufl(a) říct nahlas?"
+  },
+  {
+   "t": "Výzva",
+   "text": "Zavaž mi oči šátkem a nech mě hádat, kde se mě dotýkáš."
+  },
+  {
+   "t": "Pravda",
+   "text": "Kde všude bys mě chtěl(a) políbit?"
+  },
+  {
+   "t": "Výzva",
+   "text": "Polib mě tam, kde to nečekám."
+  },
+  {
+   "t": "Pravda",
+   "text": "Jakou roli bys se mnou chtěl(a) jednou hrát?"
+  },
+  {
+   "t": "Výzva",
+   "text": "Dvě minuty děláš jen to, co ti řeknu."
+  },
+  {
+   "t": "Pravda",
+   "text": "Čím tě vždycky spolehlivě rozpálím?"
+  },
+  {
+   "t": "Výzva",
+   "text": "Vyber mi, co si zítra vezmu na sebe. Úplně všechno."
+  },
+  {
+   "t": "Konec",
+   "text": "Doma se rozehřejete. U nás začíná příběh. → Vybrat poukaz"
+  }
+ ],
+ "PnV 4 vánoční": [
+  {
+   "t": "Pravda",
+   "text": "Který dárek ode mě si pamatuješ nejvíc?"
+  },
+  {
+   "t": "Výzva",
+   "text": "Polib mě pod jmelím. Nebo pod čímkoli, co visí ze stropu."
+  },
+  {
+   "t": "Pravda",
+   "text": "Co bys mi letos dal(a), kdyby peníze nehrály roli?"
+  },
+  {
+   "t": "Výzva",
+   "text": "Rozbal mě jako dárek. Pomalu."
+  },
+  {
+   "t": "Pravda",
+   "text": "Která vánoční tradice by měla být jen naše?"
+  },
+  {
+   "t": "Výzva",
+   "text": "Ukradněte si deset minut o samotě, i když je doma plno."
+  },
+  {
+   "t": "Pravda",
+   "text": "Co sis letos přál(a) a nikomu jsi to neřekl(a)?"
+  },
+  {
+   "t": "Výzva",
+   "text": "Napište si jedno pravidlo na příští rok. Jen pro vás dva."
+  },
+  {
+   "t": "Konec",
+   "text": "Dárek na poslední chvíli? Poukaz máte v e-mailu za pár minut. → Vybrat poukaz"
+  }
+ ]
+}

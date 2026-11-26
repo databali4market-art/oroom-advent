@@ -1,0 +1,216 @@
+[
+ {
+  "n": 1,
+  "q": "Jak má začít váš ideální večer?",
+  "a": [
+   {
+    "t": "Sklenka rumu a hudba nahlas",
+    "rooms": [
+     "havana",
+     "tortuga"
+    ]
+   },
+   {
+    "t": "Svíčky, ticho a pomalé tempo",
+    "rooms": [
+     "persie",
+     "indie"
+    ]
+   },
+   {
+    "t": "Hra, jejíž pravidla zná jen jeden z vás",
+    "rooms": [
+     "japonsko",
+     "petersburg"
+    ]
+   },
+   {
+    "t": "Nečekaným zvratem",
+    "rooms": [
+     "tortuga",
+     "japonsko"
+    ]
+   }
+  ]
+ },
+ {
+  "n": 2,
+  "q": "Kdo z vás obvykle vede?",
+  "a": [
+   {
+    "t": "Jasně, že já",
+    "rooms": [
+     "petersburg"
+    ]
+   },
+   {
+    "t": "Střídáme se",
+    "rooms": [
+     "japonsko",
+     "havana"
+    ]
+   },
+   {
+    "t": "Necháváme se unést",
+    "rooms": [
+     "persie",
+     "indie"
+    ]
+   },
+   {
+    "t": "Kdo dřív začne",
+    "rooms": [
+     "tortuga"
+    ]
+   }
+  ]
+ },
+ {
+  "n": 3,
+  "q": "Kam byste spolu nejradši utekli?",
+  "a": [
+   {
+    "t": "Do Karibiku pod pirátskou vlajkou",
+    "rooms": [
+     "tortuga"
+    ]
+   },
+   {
+    "t": "Do ulic plných hudby",
+    "rooms": [
+     "havana"
+    ]
+   },
+   {
+    "t": "Do stanu uprostřed pouště",
+    "rooms": [
+     "persie"
+    ]
+   },
+   {
+    "t": "Někam, kde nás nikdo nezná",
+    "rooms": [
+     "indie"
+    ]
+   },
+   {
+    "t": "Do zahrady, kde má každý své tajemství",
+    "rooms": [
+     "japonsko"
+    ]
+   },
+   {
+    "t": "Do paláce, kde platí přísná pravidla",
+    "rooms": [
+     "petersburg"
+    ]
+   }
+  ]
+ },
+ {
+  "n": 4,
+  "q": "Co vás láká víc?",
+  "a": [
+   {
+    "t": "Tajemství",
+    "rooms": [
+     "japonsko"
+    ]
+   },
+   {
+    "t": "Moc",
+    "rooms": [
+     "petersburg"
+    ]
+   },
+   {
+    "t": "Zakázané ovoce",
+    "rooms": [
+     "indie"
+    ]
+   },
+   {
+    "t": "Dobrodružství",
+    "rooms": [
+     "tortuga",
+     "havana"
+    ]
+   },
+   {
+    "t": "Romantika",
+    "rooms": [
+     "persie"
+    ]
+   }
+  ]
+ },
+ {
+  "n": 5,
+  "q": "Jaký je váš soundtrack?",
+  "a": [
+   {
+    "t": "Salsa",
+    "rooms": [
+     "havana"
+    ]
+   },
+   {
+    "t": "Klavír a klasika",
+    "rooms": [
+     "petersburg"
+    ]
+   },
+   {
+    "t": "Orientální melodie",
+    "rooms": [
+     "persie",
+     "indie"
+    ]
+   },
+   {
+    "t": "Bubny, které rozbuší srdce",
+    "rooms": [
+     "japonsko",
+     "tortuga"
+    ]
+   }
+  ]
+ },
+ {
+  "n": 6,
+  "q": "Jak má večer skončit?",
+  "a": [
+   {
+    "t": "Až ráno",
+    "rooms": [
+     "persie"
+    ]
+   },
+   {
+    "t": "Tak, jak nikdo nečekal",
+    "rooms": [
+     "japonsko",
+     "tortuga"
+    ]
+   },
+   {
+    "t": "Přesně podle pravidel",
+    "rooms": [
+     "petersburg"
+    ]
+   },
+   {
+    "t": "Tancem",
+    "rooms": [
+     "havana"
+    ]
+   },
+   {
+    "t": "Slibem, který nikomu neřeknete",
+    "rooms": [
+     "indie"
+    ]
+   }
+  ]
+ }
+]

@@ -1,17 +1,17 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowRight, ArrowUpRight, Eye, Gift, Snowflake, LogIn, Phone, Share2, Sparkles, Store, Wrench, Smartphone } from 'lucide-react';
-import { availableDay, BASE, BRANCHES_URL, CONTEST_DAYS, contestOpen, doors as ALL_DOORS, OPERATOR, PHONE, PRIVACY_URL, RULES_URL, SHOP } from './content';
-import { CONTENT_MODE, DEMO_MODE, PREVIEW_KEY } from './config';
-import { backend } from './backend';
-import type { Door, Progress, User } from './types';
-import { DoorGrid } from './components/DoorGrid';
-import { DoorModal } from './components/DoorModal';
-import { LoginDialog } from './components/LoginDialog';
-import { GiftsDrawer } from './components/GiftsDrawer';
+import { ArrowLeft, ArrowRight, ArrowUpRight, Eye, Gift, Share2, Snowflake, Send, Ticket, HelpCircle, DoorOpen } from 'lucide-react';
+import { GAMES, windowOf } from './content';
+import { CONTACT, PREVIEW_KEY, PRIVACY_URL, SHOP, SITE_URL, VOUCHERS_URL } from './config';
+import { availableDay, plural } from './lib/time';
+import { loadOpened, saveOpened } from './lib/progress';
+import { shareLink } from './lib/share';
+import { DoorGrid, TYPE_CLASS } from './components/DoorGrid';
 import { Celebrate, Lights, Logo, Snow } from './components/Decor';
+import { Sheet } from './components/Sheet';
+import { Consent } from './components/Consent';
+import { GameById, WindowBody } from './components/Windows';
 
 const EVE = Date.parse('2026-12-24T00:00:00+01:00');
-const draft = CONTENT_MODE !== 'live';
 const SS = 'oroom-';
 
 function readPreview(): boolean {
@@ -19,170 +19,114 @@ function readPreview(): boolean {
     const url = new URL(location.href);
     const q = url.searchParams.get('nahled');
     if (q !== null) {
-      if (q === PREVIEW_KEY) sessionStorage.setItem(SS + 'nahled', '1');
-      else sessionStorage.removeItem(SS + 'nahled');
-      url.searchParams.delete('nahled');
-      history.replaceState(null, '', url);
+      if (q === PREVIEW_KEY) sessionStorage.setItem(SS + 'nahled', '1'); else sessionStorage.removeItem(SS + 'nahled');
+      url.searchParams.delete('nahled'); history.replaceState(null, '', url);
     }
     return sessionStorage.getItem(SS + 'nahled') === '1';
   } catch { return false; }
 }
 
-function useCountdown() {
-  const calc = () => {
-    const s = Math.max(0, Math.floor((EVE - Date.now()) / 1000));
-    return [Math.floor(s / 86400), Math.floor(s / 3600) % 24, Math.floor(s / 60) % 60, s % 60];
-  };
-  const [v, setV] = useState(calc);
-  useEffect(() => { const id = setInterval(() => setV(calc()), 1000); return () => clearInterval(id); }, []);
-  return v;
-}
-
-const plural = (n: number, one: string, few: string, many: string) => (n === 1 ? one : n >= 2 && n <= 4 ? few : many);
-
-/* Ukázkový režim: host bez přihlášení, postup jen v tomto prohlížeči. */
-const GUEST_KEY = 'oroom-demo-host';
-const EMPTY: Progress = { opened: {}, entries: [], newsletter: false };
-function loadGuest(): Progress { try { return { ...EMPTY, ...JSON.parse(localStorage.getItem(GUEST_KEY) || '{}') }; } catch { return EMPTY; } }
-function saveGuest(p: Progress) { try { localStorage.setItem(GUEST_KEY, JSON.stringify(p)); } catch { /* */ } }
+type View = { kind: 'day'; day: number } | { kind: 'game'; id: string; fromDay?: number };
 
 export default function App() {
-  const [preview, setPreview] = useState(() => DEMO_MODE || readPreview());
-  const [today, setToday] = useState(() => availableDay());
+  const [preview, setPreview] = useState(readPreview);
+  const [now, setNow] = useState(() => Date.now());
+  const today = availableDay(now);
   const max = preview ? 24 : today;
-  const [user, setUser] = useState<User | null>(null);
-  const [authReady, setAuthReady] = useState(false);
-  const [progress, setProgress] = useState<Progress>(EMPTY);
-  const [modalDay, setModalDay] = useState<number | null>(null);
+  const [opened, setOpened] = useState<Set<number>>(() => new Set(loadOpened()));
+  const [view, setView] = useState<View | null>(null);
   const [opening, setOpening] = useState<number | null>(null);
-  const [login, setLogin] = useState<{ open: boolean; reason?: string; pendingDay?: number }>({ open: false });
-  const [drawer, setDrawer] = useState(false);
   const [toast, setToast] = useState('');
   const [burst, setBurst] = useState(0);
   const toastTimer = useRef<ReturnType<typeof setTimeout>>();
-  const trigger = useRef<HTMLElement | null>(null);
-  const countdown = useCountdown();
 
-  const notify = useCallback((s: string) => {
-    setToast(s);
-    clearTimeout(toastTimer.current);
-    toastTimer.current = setTimeout(() => setToast(''), 4200);
-  }, []);
+  useEffect(() => { const id = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(id); }, []);
+  const notify = useCallback((s: string) => { setToast(s); clearTimeout(toastTimer.current); toastTimer.current = setTimeout(() => setToast(''), 3800); }, []);
 
-  useEffect(() => {
-    let off: (() => void) | undefined;
-    backend.watch((u) => { setUser(u); setAuthReady(true); }).then((f) => { off = f; });
-    return () => off?.();
-  }, [notify]);
+  const setUrl = (fn: (u: URL) => void) => { const u = new URL(location.href); fn(u); history.replaceState(null, '', u); };
 
-  useEffect(() => {
-    if (!user) { setProgress(DEMO_MODE ? loadGuest() : EMPTY); return; }
-    backend.load(user, preview).then(setProgress).catch(() => notify('Nepodařilo se načíst váš postup. Zkuste obnovit stránku.'));
-  }, [user, preview, notify]);
-
-  useEffect(() => { const id = setInterval(() => setToday(availableDay()), 30000); return () => clearInterval(id); }, []);
-
-  const openedMap = useMemo(() => {
-    const m = new Map<number, Door['type']>();
-    for (const d of Object.keys(progress.opened).map(Number)) if (d <= max) m.set(d, ALL_DOORS[d - 1]?.type);
-    return m;
-  }, [progress.opened, max]);
-  const openedDoors = useMemo(() => ALL_DOORS.filter((d) => openedMap.has(d.day)), [openedMap]);
-
-  const openDoor = useCallback(async (day: number, el?: HTMLElement) => {
-    if (el) trigger.current = el;
+  const openDoor = useCallback(async (day: number) => {
     if (day > max) { notify(`Okénko ${day} se odemkne ${day}. prosince o půlnoci.`); return; }
-    if (!user && !DEMO_MODE) { setLogin({ open: true, reason: 'Přihlaste se a otevřete okénko', pendingDay: day }); return; }
-    if (!progress.opened[day]) {
+    if (!opened.has(day)) {
       setOpening(day);
-      await new Promise((r) => setTimeout(r, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 550));
+      await new Promise((r) => setTimeout(r, matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 500));
       setOpening(null);
-      setProgress((p) => { const n = { ...p, opened: { ...p.opened, [day]: new Date().toISOString() } }; if (!user) saveGuest(n); return n; });
-      if (user) backend.markOpened(user, day, preview).catch(() => notify('Okénko se nepodařilo uložit k účtu. Zkuste to prosím znovu.'));
+      setOpened((s) => { const n = new Set(s).add(day); saveOpened([...n]); return n; });
       setBurst((b) => b + 1);
     }
-    setModalDay(day);
-    const url = new URL(location.href); url.searchParams.set('den', String(day)); history.replaceState(null, '', url);
-  }, [max, user, progress.opened, preview, notify]);
+    setView({ kind: 'day', day });
+    setUrl((u) => { u.searchParams.set('den', String(day)); u.searchParams.delete('hra'); });
+  }, [max, opened, notify]);
 
+  const openGame = useCallback((id: string, fromDay?: number) => {
+    setView({ kind: 'game', id, fromDay });
+    setUrl((u) => { u.searchParams.set('hra', id); u.searchParams.delete('den'); });
+  }, []);
+
+  const close = useCallback(() => {
+    setView(null);
+    setUrl((u) => { u.searchParams.delete('den'); u.searchParams.delete('hra'); });
+  }, []);
+
+  /* odkaz na okénko (?den=) nebo hru (?hra=) */
+  const linked = useRef(false);
   useEffect(() => {
-    if (user && login.pendingDay && !login.open) { const d = login.pendingDay; setLogin({ open: false }); void openDoor(d); }
-  }, [user, login, openDoor]);
+    if (linked.current) return;
+    linked.current = true;
+    const q = new URLSearchParams(location.search);
+    const g = q.get('hra'); const n = Number(q.get('den'));
+    if (g && GAMES.some((x) => x.id === g) && (max >= 24 || preview || GAMES.find((x) => x.id === g)!.day <= max)) openGame(g);
+    else if (n >= 1 && n <= 24 && n <= max) void openDoor(n);
+  }, [max, preview, openDoor, openGame]);
 
-  const deepLinked = useRef(false);
-  useEffect(() => {
-    if (deepLinked.current || !authReady) return;
-    const n = Number(new URLSearchParams(location.search).get('den'));
-    if (n >= 1 && n <= 24) { deepLinked.current = true; void openDoor(n); }
-  }, [authReady, openDoor]);
-
-  function closeModal() {
-    setModalDay(null);
-    const url = new URL(location.href); url.searchParams.delete('den'); history.replaceState(null, '', url);
-    trigger.current?.focus();
+  async function share(day?: number) {
+    const url = SITE_URL + '/' + (day ? `?den=${day}` : '');
+    const r = await shareLink({ title: 'Adventní kalendář OROOM Brno', text: '24 večerů jen pro vás dva: hry, výzvy a překvapení až do Štědrého dne.', url });
+    if (r === 'copied') notify('Odkaz je zkopírovaný. Pošlete ho partnerovi.'); else if (r === 'failed') notify('Sdílení se nepodařilo.');
   }
 
-  async function share() {
-    const url = new URL(location.origin + BASE);
-    if (modalDay) url.searchParams.set('den', String(modalDay));
-    try {
-      if (navigator.share) { await navigator.share({ title: 'Adventní kalendář OROOM Brno', text: '24 dní, 24 překvapení: nabídky, hry, tipy a soutěže až do Štědrého dne.', url: url.href }); return; }
-      await navigator.clipboard.writeText(url.href);
-      notify('Odkaz je zkopírovaný. Pošlete ho dál.');
-    } catch (e) { if ((e as Error).name !== 'AbortError') notify('Sdílení se nepodařilo. Odkaz zkopírujte z adresního řádku.'); }
-  }
-  async function copy(code: string) {
-    try { await navigator.clipboard.writeText(code); notify(`Kód ${code} je zkopírovaný.`); }
-    catch { notify('Kód prosím označte a zkopírujte ručně.'); }
-  }
-  async function logout() { await backend.signOut(); setDrawer(false); notify('Byli jste odhlášeni. Zítra na vás čeká další okénko!'); }
-
-  const door = modalDay ? ALL_DOORS[modalDay - 1] : null;
-  const openedCount = openedMap.size;
+  const left = Math.max(0, Math.floor((EVE - now) / 1000));
+  const countdown = [Math.floor(left / 86400), Math.floor(left / 3600) % 24, Math.floor(left / 60) % 60, left % 60];
+  const openedCount = useMemo(() => [...opened].filter((d) => d <= max).length, [opened, max]);
   const status = preview ? 'Režim náhledu – všechna okénka jsou odemčená'
     : max === 0 ? 'První okénko se odemkne 1. prosince o půlnoci'
-    : max >= 24 ? 'Všechna okénka jsou odemčená. Veselé Vánoce!'
-    : openedMap.has(max) ? `Dnešní okénko máte otevřené. Zítra čeká ${max + 1}.`
+    : max >= 24 ? 'Všechna okénka jsou odemčená. Krásné Vánoce!'
+    : opened.has(max) ? `Dnešní okénko máte otevřené. Zítra čeká ${max + 1}.`
     : `Dnes na vás čeká okénko číslo ${max}`;
+
+  const day = view?.kind === 'day' ? view.day : null;
+  const tomorrow = day && day < 24 ? windowOf(day + 1) : null;
 
   return (
     <>
       {preview && (
         <div className="preview-bar">
-          <Eye size={15} /> {DEMO_MODE ? 'Ukázková verze pro prezentaci – všechna okénka lze proklikat bez přihlášení' : 'Náhled: všechna okénka odemčená'}{draft ? ' · obsah je ukázkový, poznámky „K potvrzení“ zmizí po přepnutí na ostrý režim' : ''}
-          {!DEMO_MODE && <button onClick={() => { try { sessionStorage.removeItem(SS + 'nahled'); } catch { /* */ } setPreview(false); }}>Ukončit</button>}
+          <Eye size={15} /> Náhled: všechna okénka odemčená
+          <button onClick={() => { try { sessionStorage.removeItem(SS + 'nahled'); } catch { /* */ } setPreview(false); }}>Ukončit</button>
         </div>
       )}
 
       <header className="topbar">
         <div className="wrap">
           <nav className="actions left" aria-label="Sdílení">
-            <button className="chip" onClick={share} aria-label="Sdílet kalendář"><Share2 size={16} /><span>Sdílet</span></button>
+            <button className="chip" onClick={() => share()} aria-label="Sdílet kalendář"><Share2 size={16} /><span>Sdílet</span></button>
           </nav>
           <a href={SHOP} className="brand" aria-label="OROOM Brno"><Logo /></a>
-          <nav className="actions right" aria-label="Ovládání">
-            {user || DEMO_MODE ? (
-              <button className="chip pink" onClick={() => setDrawer(true)}><Gift size={16} /><span>Moje dárky</span>{openedCount > 0 && <b className="badge">{openedCount}</b>}</button>
-            ) : (
-              <button className="chip pink" onClick={() => setLogin({ open: true })}><LogIn size={16} /><span>Přihlásit</span></button>
-            )}
+          <nav className="actions right" aria-label="Poukazy">
+            <a className="chip pink" href={VOUCHERS_URL} target="_blank" rel="noopener"><Gift size={16} /><span>Poukaz</span></a>
           </nav>
         </div>
       </header>
 
-      {/* ------------------------------------------------------------- HERO */}
       <section className="hero">
         <Snow />
         <Lights className="hero-lights" count={22} />
         <div className="wrap hero-center">
           <img className="hero-emblem" src={`${import.meta.env.BASE_URL}emblem.svg`} alt="" width="56" height="56" />
           <div className="hero-kicker">Adventní kalendář <i>2026</i></div>
-          <h1>24 dní<br />překvapení pro dva</h1>
-          <p>Každý den o půlnoci se odemkne nové okénko: nabídka, hra, tip nebo soutěž. Odměny na vás čekají v OROOM Brno.</p>
-          <div className="hero-cta">
-            <a href="#kalendar" className="btn primary big">{user || DEMO_MODE ? 'Ke kalendáři' : 'Vstoupit do kalendáře'} <ArrowRight size={18} /></a>
-            {!user && !DEMO_MODE && <button className="btn ghost" onClick={() => setLogin({ open: true })}><LogIn size={17} /> Přihlásit se</button>}
-          </div>
+          <h1>24 večerů<br />jen pro vás dva</h1>
+          <p>Každý den o půlnoci se odemkne nové okénko: kvíz, hra, výzva nebo dárek. Hrajte spolu a objevte, která destinace OROOM je napsaná přímo pro vás.</p>
+          <div className="hero-cta"><a href="#kalendar" className="btn primary big">Ke kalendáři <ArrowRight size={18} /></a></div>
         </div>
         <div className="wrap countdown" aria-label="Odpočet do Štědrého dne">
           <div className="cd-label">Do Štědrého dne zbývá</div>
@@ -194,7 +138,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* --------------------------------------------------------- CALENDAR */}
       <main>
         <section id="kalendar" className="calendar wrap">
           <div className="cal-head">
@@ -202,36 +145,34 @@ export default function App() {
               <div className="eyebrow">Každý den jedno okénko</div>
               <h2>Vyberte si <em>dnešní překvapení</em></h2>
             </div>
-            <p>Nabídky na pobočkách, kvízy, užitečné tipy a tři soutěže o skvělé výhry. Co otevřete, to si pamatujeme u vašeho účtu.</p>
+            <p>Kvízy, hry, výzvy a dárky pro dva. Odpovídáte spolu a hádat se o odpověď je povoleno.</p>
           </div>
           <div className="cal-bar">
             <div className="progress">
-              <span>{user || DEMO_MODE ? <><b>{openedCount}</b> z 24 okének otevřeno</> : 'Přihlaste se a začněte otevírat'}</span>
+              <span><b>{openedCount}</b> / 24 okének objeveno</span>
               <div className="track"><i style={{ width: `${(openedCount / 24) * 100}%` }} /></div>
             </div>
             <span className="status">{status}</span>
           </div>
-          <DoorGrid max={max} opened={openedMap} opening={opening} onOpen={openDoor} />
-          <div className="legend" aria-hidden="true"><i className="t-offer" />Nabídka<i className="t-game" />Hra<i className="t-tip" />Tip<i className="t-contest" />Soutěž<i className="t-finale" />Finále</div>
-          <div className="cal-foot">
-            {user ? <span>Přihlášeni jako <b>{user.email}</b> · <button className="link" onClick={() => setDrawer(true)}>Moje dárky</button></span>
-              : !DEMO_MODE && <button className="btn pink" onClick={() => setLogin({ open: true })}><LogIn size={17} /> Přihlásit se a začít</button>}
+          <DoorGrid max={max} opened={opened} opening={opening} onOpen={openDoor} />
+          <div className="legend" aria-hidden="true">
+            {(['Kvíz', 'Hra', 'Výzva', 'Bonus', 'Tip', 'Finále'] as const).map((t) => <span key={t}><i className={'t-' + TYPE_CLASS[t]} />{t}</span>)}
           </div>
         </section>
 
         <section className="how wrap">
           <h2>Jak to funguje</h2>
           <ol>
-            <li><b>1</b><div><strong>Přihlaste se</strong><span>Jedním klikem přes Google.</span></div></li>
-            <li><b>2</b><div><strong>Otevírejte okénka</strong><span>Každý den o půlnoci se odemkne nové.</span></div></li>
-            <li><b>3</b><div><strong>Využijte kupón</strong><span>Ukažte ho na pobočce u pultu.</span></div></li>
+            <li><b>1</b><div><strong>Otevírejte okénka</strong><span>Každý den o půlnoci se odemkne nové. Bez přihlášení.</span></div></li>
+            <li><b>2</b><div><strong>Hrajte spolu</strong><span>Kvízy, karty a výzvy jsou psané pro dva.</span></div></li>
+            <li><b>3</b><div><strong>Darujte zážitek</strong><span>Poukaz OROOM přijde do e-mailu za pár minut.</span></div></li>
           </ol>
         </section>
 
         <section className="services wrap">
-          <a href={SHOP + 'servis/'}><Wrench size={26} /><strong>Servis na počkání</strong><span>Displeje, baterie, čištění. Rychle a s náhradním telefonem.</span><ArrowUpRight size={18} /></a>
-          <a href={BRANCHES_URL}><Store size={26} /><strong>Naše pobočky</strong><span>Kupóny z kalendáře vyřídíte na kterékoli ze šesti poboček.</span><ArrowUpRight size={18} /></a>
-          <a href={SHOP}><Smartphone size={26} /><strong>E-shop</strong><span>Telefony, příslušenství i použité kousky.</span><ArrowUpRight size={18} /></a>
+          <a href={VOUCHERS_URL} target="_blank" rel="noopener"><Ticket size={26} /><strong>Dárkové poukazy</strong><span>Do e-mailu hned, platnost neomezená. Termín si vyberete spolu.</span><ArrowUpRight size={18} /></a>
+          <a href={SHOP} target="_blank" rel="noopener"><DoorOpen size={26} /><strong>Naše pokoje</strong><span>Indie, Havana, Japonsko, St. Petersburg, Persie a Tortuga.</span><ArrowUpRight size={18} /></a>
+          <a href={SHOP + 'otazky-a-odpovedi'} target="_blank" rel="noopener"><HelpCircle size={26} /><strong>Otázky a odpovědi</strong><span>Jak to u nás funguje, než dorazíte ke dveřím.</span><ArrowUpRight size={18} /></a>
         </section>
 
         <section className="closing">
@@ -244,60 +185,38 @@ export default function App() {
         <div className="wrap">
           <Logo />
           <div className="footer-links">
-            <a href={SHOP} target="_blank" rel="noreferrer">E-shop ↗</a>
-            <a href={BRANCHES_URL} target="_blank" rel="noreferrer">Kde nás najdete ↗</a>
-            <a href={'tel:' + PHONE.replace(/\s/g, '')}>{PHONE}</a>
-            <a href={RULES_URL} target="_blank" rel="noreferrer">Pravidla soutěží</a>
-            <a href={PRIVACY_URL} target="_blank" rel="noreferrer">Ochrana osobních údajů ↗</a>
+            <a href={SHOP} target="_blank" rel="noopener">OROOM Brno ↗</a>
+            <a href={VOUCHERS_URL} target="_blank" rel="noopener">Poukazy ↗</a>
+            <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+            <a href={`tel:${CONTACT.phone.replace(/\s/g, '')}`}>{CONTACT.phone}</a>
+            <a href={PRIVACY_URL} target="_blank" rel="noopener">Ochrana osobních údajů ↗</a>
           </div>
           <div id="soukromi" className="privacy">
             <h3>Soukromí</h3>
-            <p>Správcem osobních údajů je {OPERATOR.name} (OROOM Brno), IČ {OPERATOR.ico}. Pro přihlášení a ukládání dat používáme službu Firebase (Google). Ukládáme váš e-mail a jméno z účtu Google, která okénka jste otevřeli, soutěžní odpovědi (u soutěže o nejhůř rozbitý displej i zaslanou fotku) a to, zda chcete dostávat novinky. Údaje slouží jen k provozu adventního kalendáře a vyhodnocení soutěží; e-mailem s novinkami vás oslovíme jen tehdy, pokud jste k tomu dali souhlas (odvolat ho můžete kdykoli v sekci Moje dárky). Údaje z kalendáře uchováváme do 31. 3. 2027 (soutěžní údaje 3 měsíce od vyhlášení výsledků), kontakty se souhlasem do jeho odvolání. Web nepoužívá analytické ani reklamní cookies. Více v <a href={PRIVACY_URL} target="_blank" rel="noreferrer">zásadách ochrany osobních údajů</a>.</p>
+            <p>Kalendář nesbírá žádné osobní údaje: není potřeba registrace ani přihlášení. Které okénko jste otevřeli si pamatuje jen váš prohlížeč. Odpovědi z kvízů a her se nikam neodesílají. S vaším souhlasem měříme souhrnnou návštěvnost (otevřená okénka, dokončené kvízy). Více v <a href={PRIVACY_URL} target="_blank" rel="noopener">zásadách ochrany osobních údajů</a>.</p>
           </div>
-          <small>© 2026 OROOM Brno · Provozovatel: {OPERATOR.name}, {OPERATOR.address}, IČ {OPERATOR.ico} · Okénka se odemykají o půlnoci (Europe/Prague)</small>
+          <small>© 2026 OROOM Brno · Okénka se odemykají o půlnoci (Europe/Prague)</small>
         </div>
       </footer>
 
-      <DoorModal
-        door={door}
-        email={user?.email || ''}
-        preview={preview}
-        draft={draft}
-        entered={!!door && progress.entries.includes(door.day)}
-        canPrev={!!door && door.day > 1}
-        canNext={!!door && door.day < max}
-        onPrev={() => door && openDoor(door.day - 1)}
-        onNext={() => door && openDoor(door.day + 1)}
-        onClose={closeModal}
-        onShare={share}
-        onCopy={copy}
-        onWin={() => setBurst((b) => b + 1)}
-        offerNewsletter={!!user && !progress.newsletter && !progress.newsletterAsked}
-        onNewsletterOffer={(v) => {
-          if (!user) return;
-          setProgress((p) => ({ ...p, newsletter: p.newsletter || v, newsletterAsked: true }));
-          notify(v ? 'Děkujeme! Novinky vám budeme posílat e-mailem.' : 'Dobře, nebudeme otravovat.');
-          backend.answerNewsletterOffer(user, v).catch(() => notify('Nastavení se nepodařilo uložit.'));
-        }}
-        onEnter={async (day, answer, contact, photo) => {
-          if (!user && !DEMO_MODE) throw new Error('Nejste přihlášeni.');
-          const c = ALL_DOORS[day - 1]?.contest;
-          if (!CONTEST_DAYS.includes(day) || !c) throw new Error('Soutěž v tomto okénku neprobíhá.');
-          if (!preview && !contestOpen(c.until)) throw new Error('Tato soutěž už skončila.');
-          const a = answer.trim();
-          if (a.length < 1) throw new Error('Vyplňte prosím odpověď.');
-          if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contact)) throw new Error('Zkontrolujte prosím e-mail.');
-          if (user) await backend.submitEntry(user, day, a, preview, { contact: contact.toLowerCase(), photo });
-          setProgress((p) => { const n = { ...p, entries: [...p.entries, day] }; if (!user) saveGuest(n); return n; });
-          setBurst((b) => b + 1);
-        }}
-      />
-      <LoginDialog open={login.open} reason={login.reason} onClose={() => setLogin({ open: false })} onSignedIn={() => { setLogin((l) => ({ ...l, open: false })); notify('Jste přihlášeni. Hezký advent!'); }} />
-      <GiftsDrawer
-        open={drawer} user={user} newsletter={progress.newsletter} doors={openedDoors}
-        onClose={() => setDrawer(false)} onPick={(d) => { setDrawer(false); void openDoor(d); }} onCopy={copy} onLogout={logout}
-        onNewsletter={(v) => { if (!user) return; setProgress((p) => ({ ...p, newsletter: v, newsletterAsked: true })); backend.setNewsletter(user, v).catch(() => notify('Nastavení se nepodařilo uložit.')); }}
-      />
+      {view && (
+        <Sheet label={day ? `${day}. 12.` : 'Hry'} onClose={close}>
+          {view.kind === 'game' && view.fromDay && <button className="back" onClick={() => openDoor(view.fromDay!)}><ArrowLeft size={14} /> Zpět</button>}
+          {view.kind === 'day' ? (
+            <>
+              <WindowBody day={view.day} now={now} onToast={notify} onOpenGame={(id) => openGame(id, view.day)} />
+              <div className="w-foot">
+                <div className="counter">Objeveno {openedCount} / 24</div>
+                {tomorrow && <div className="tomorrow">Zítra: <b>{tomorrow.title}</b></div>}
+                <button className="btn ghost wide" onClick={() => share(view.day)}><Send size={14} /> Poslat partnerovi</button>
+              </div>
+            </>
+          ) : (
+            <GameById id={view.id} onToast={notify} onOpenGame={(id) => openGame(id, view.fromDay)} />
+          )}
+        </Sheet>
+      )}
+      <Consent />
       <Celebrate burst={burst} />
       {toast && <div className="toast" role="status">{toast}</div>}
     </>

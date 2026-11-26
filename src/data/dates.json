@@ -1,0 +1,98 @@
+{
+ "Rande víkend": [
+  {
+   "co": "Večeře z toho, co najdete v lednici",
+   "kde": "Doma",
+   "pravidlo": "Kdo kritizuje, myje nádobí."
+  },
+  {
+   "co": "Film v kině v poslední řadě",
+   "kde": "Ve městě",
+   "pravidlo": "Film vybírá ten, kdo prohraje kámen, nůžky, papír."
+  },
+  {
+   "co": "Degustace tří vín",
+   "kde": "Doma na gauči",
+   "pravidlo": "Ke každé sklence jedna pravda."
+  },
+  {
+   "co": "Večerní procházka bez cíle",
+   "kde": "Kdekoli",
+   "pravidlo": "Na každé křižovatce rozhoduje ten druhý."
+  },
+  {
+   "co": "Piknik na zemi v obýváku",
+   "kde": "Doma",
+   "pravidlo": "Telefony zůstávají v jiné místnosti."
+  },
+  {
+   "co": "Bar, kde jste ještě nebyli",
+   "kde": "Ve městě",
+   "pravidlo": "Předstírejte, že se vidíte poprvé."
+  }
+ ],
+ "Rande 20 minut": [
+  {
+   "co": "Horká vana a svíčky",
+   "kde": "Koupelna",
+   "pravidlo": "Mluví se jen šeptem."
+  },
+  {
+   "co": "Tanec v kuchyni",
+   "kde": "Kuchyně",
+   "pravidlo": "Písničku vybírá ten, kdo tančí hůř."
+  },
+  {
+   "co": "Masáž na střídačku",
+   "kde": "Ložnice",
+   "pravidlo": "Deset minut každý. Kdo promluví první, začíná."
+  },
+  {
+   "co": "Horká čokoláda a tři otázky",
+   "kde": "Gauč",
+   "pravidlo": "Odpovídá se jen pravdivě."
+  },
+  {
+   "co": "Zhasnuto a jedna svíčka",
+   "kde": "Kdekoli",
+   "pravidlo": "Kdo první promluví, plní přání."
+  },
+  {
+   "co": "Dopis na jeden odstavec",
+   "kde": "U stolu",
+   "pravidlo": "Přečte se až ráno."
+  }
+ ],
+ "Rande venku": [
+  {
+   "co": "Svařák a procházka nasvíceným centrem",
+   "kde": "Centrum města",
+   "pravidlo": "Celou dobu se držíte za ruce."
+  },
+  {
+   "co": "Kluziště",
+   "kde": "Venku",
+   "pravidlo": "Kdo spadne, platí další svařák."
+  },
+  {
+   "co": "Večeře v restauraci, kterou byste si normálně nedopřáli",
+   "kde": "Ve městě",
+   "pravidlo": "Objednává ten druhý."
+  },
+  {
+   "co": "Výhled na noční město",
+   "kde": "Vyhlídka",
+   "pravidlo": "Tři přání, jedno z nich nahlas."
+  },
+  {
+   "co": "Jazz bar nebo koncert",
+   "kde": "Ve městě",
+   "pravidlo": "Žádné fotky. Jen vy dva."
+  },
+  {
+   "co": "Divadlo nebo opera",
+   "kde": "Balkon",
+   "pravidlo": "O přestávce sklenka bublinek a jeden kompliment."
+  }
+ ]
+}

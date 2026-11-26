@@ -1,0 +1,167 @@
+{
+ "1": [
+  {
+   "q": "Jak vypadá moje ideální neděle?",
+   "a": [
+    "Celý den v posteli",
+    "Výlet",
+    "Návštěva přátel",
+    "Žádný plán"
+   ]
+  },
+  {
+   "q": "Co mě nejvíc rozesměje?",
+   "a": [
+    "Trapné vtipy",
+    "Ty, když se snažíš tančit",
+    "Videa se zvířaty",
+    "Moje vlastní historky"
+   ]
+  },
+  {
+   "q": "Z jakého dárku mám největší radost?",
+   "a": [
+    "Zážitek",
+    "Něco, co jsem kdysi zmínil(a) mimochodem",
+    "Něco ručně vyrobeného",
+    "Překvapení bez důvodu"
+   ]
+  },
+  {
+   "q": "Kde bych žil(a), kdyby na ničem nezáleželo?",
+   "a": [
+    "U moře",
+    "Na horách",
+    "Ve velkoměstě",
+    "Tady, jen s větší koupelnou"
+   ]
+  },
+  {
+   "q": "Moje tajná neřest?",
+   "a": [
+    "Reality show",
+    "Sladkosti v noci",
+    "Písničky z mládí",
+    "Spaní přes poledne"
+   ]
+  },
+  {
+   "q": "Co mě nejvíc vytočí?",
+   "a": [
+    "Zpoždění",
+    "Mlaskání",
+    "Nepořádek",
+    "Když někdo nedokouká film"
+   ]
+  },
+  {
+   "q": "Jaké rande bych si zopakoval(a)?",
+   "a": [
+    "Večeři",
+    "Procházku",
+    "Bar",
+    "Něco úplně šíleného"
+   ]
+  },
+  {
+   "q": "Jakou superschopnost bych chtěl(a)?",
+   "a": [
+    "Teleport",
+    "Číst myšlenky",
+    "Zastavit čas",
+    "Neviditelnost"
+   ]
+  }
+ ],
+ "2": [
+  {
+   "q": "Kdy jsem se do tebe zamiloval(a)?",
+   "a": [
+    "Hned",
+    "Po pár rande",
+    "Až po čase",
+    "Pořád se rozhoduju"
+   ]
+  },
+  {
+   "q": "Co na tobě miluju a nahlas to neříkám?",
+   "a": [
+    "Tvůj smích",
+    "Tvoje ruce",
+    "Jak se o mě staráš",
+    "Jak se mračíš"
+   ]
+  },
+  {
+   "q": "Na co z našich začátků nejradši vzpomínám?",
+   "a": [
+    "První polibek",
+    "První výlet",
+    "První hádku",
+    "První společné ráno"
+   ]
+  },
+  {
+   "q": "Co bych s tebou chtěl(a) zažít, než nám bude osmdesát?",
+   "a": [
+    "Cestu kolem světa",
+    "Něco hodně odvážného",
+    "Vlastní dům",
+    "Ještě víc takových večerů"
+   ]
+  },
+  {
+   "q": "Čím mě dokážeš nejvíc rozpálit?",
+   "a": [
+    "Pohledem",
+    "Šepotem",
+    "Když převezmeš iniciativu",
+    "Když mi odporuješ"
+   ]
+  },
+  {
+   "q": "Kde bych si dal(a) rande, kdyby nic nebylo zakázané?",
+   "a": [
+    "Na střeše",
+    "Na pláži v noci",
+    "Na zámku",
+    "V pokoji, kde neplatí žádná pravidla"
+   ]
+  },
+  {
+   "q": "Co mi chybí nejvíc, když na sebe nemáme čas?",
+   "a": [
+    "Doteky",
+    "Dlouhé rozhovory",
+    "Smích",
+    "Spontánnost"
+   ]
+  },
+  {
+   "q": "Jakou roli bych si v OROOM vybral(a)?",
+   "a": [
+    "Korzár nebo cizinka",
+    "Strážce tajemství",
+    "Ten, kdo vládne",
+    "Ten, kdo se nechá svést"
+   ]
+  }
+ ],
+ "msg": [
+  {
+   "min": 0,
+   "max": 2,
+   "text": "Ještě máte spoustu věcí, kterými se můžete překvapit. A právě v tom je kouzlo."
+  },
+  {
+   "min": 3,
+   "max": 5,
+   "text": "Znáte se dobře, ale pár tajemství vám ještě zbývá."
+  },
+  {
+   "min": 6,
+   "max": 8,
+   "text": "Skoro si čtete myšlenky. Je čas napsat společně nový příběh."
+  }
+ ]
+}
