@@ -1,16 +1,28 @@
 import { SITE_URL } from '../config';
 import { track } from './analytics';
 
-export async function copyText(text: string): Promise<boolean> {
-  try { await navigator.clipboard.writeText(text); return true; } catch { /* starší prohlížeče */ }
+/** Kopírování přímo z kliknutí (iOS a vestavěné prohlížeče Instagramu/Facebooku vyžadují synchronní volání). */
+function legacyCopy(text: string): boolean {
+  const prev = document.activeElement as HTMLElement | null;
+  const t = document.createElement('textarea');
+  t.value = text; t.readOnly = true;
+  t.setAttribute('aria-hidden', 'true');
+  t.style.cssText = 'position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px;';
+  document.body.appendChild(t);
+  let ok = false;
   try {
-    const t = document.createElement('textarea');
-    t.value = text; t.style.position = 'fixed'; t.style.opacity = '0';
-    document.body.appendChild(t); t.select();
-    const ok = document.execCommand('copy');
-    t.remove();
-    return ok;
-  } catch { return false; }
+    t.focus({ preventScroll: true });
+    t.select(); t.setSelectionRange(0, text.length);
+    ok = document.execCommand('copy');
+  } catch { ok = false; }
+  t.remove();
+  prev?.focus?.({ preventScroll: true });
+  return ok;
+}
+
+export async function copyText(text: string): Promise<boolean> {
+  if (legacyCopy(text)) return true; // běží synchronně v rámci kliknutí
+  try { await navigator.clipboard.writeText(text); return true; } catch { return false; }
 }
 
 /** Web Share API; kde není, zkopíruje odkaz. Vrací 'shared' | 'copied' | 'failed'. */

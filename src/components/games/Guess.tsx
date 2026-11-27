@@ -80,7 +80,7 @@ export function Guess({ round, intro, startLabel, onOpenQuiz }: { round: 1 | 2; 
   }
   const asking = phase === 'answer';
   return (
-    <div className="qq">
+    <div className="qq" key={`${half}-${i}-${phase}`}>
       <div className="prog">{qs.map((_, k) => <i key={k} className={k <= i ? 'on' : ''} />)}</div>
       <div className="qn">Otázka {i + 1} / {n}</div>
       <div className="role">{asking ? `Hráč ${answerer} odpovídá za sebe` : `Hráč ${guesser} hádá`}</div>

@@ -90,13 +90,13 @@ export function RoomQuiz({ day, onToast }: { day: number; onToast: (t: string) =
   }
   const q = quizRooms[step];
   return (
-    <div className="qq">
+    <div className="qq" key={step}>
       <div className="prog">{quizRooms.map((_, i) => <i key={i} className={i <= step ? 'on' : ''} />)}</div>
       <div className="qn">Otázka {step + 1} / {n}</div>
       <h2 className="qt acc">{q.q}</h2>
       <div className="opts">
         {q.a.map((a, i) => (
-          <button key={i} className={`opt ${sel === i ? 'sel' : ''}`} onClick={() => pick(i)}><b>{LETTERS[i]}</b>{a.t}</button>
+          <button key={i} className={`opt ${sel === i ? 'sel' : ''}`} onClick={(e) => { e.currentTarget.blur(); pick(i); }}><b>{LETTERS[i]}</b>{a.t}</button>
         ))}
       </div>
       <div className="hint">Odpovídejte spolu. Hádat se je povoleno.</div>

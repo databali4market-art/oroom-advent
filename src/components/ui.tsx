@@ -42,13 +42,25 @@ export function ActBtn({ children, onClick, ghost, className = '', disabled }: {
 
 /** Kód / heslo s tlačítkem Zkopírovat */
 export function CodeBox({ code, label, day }: { code: string; label: string; day: number }) {
-  const [done, setDone] = useState(false);
+  const [state, setState] = useState<'idle' | 'ok' | 'fail'>('idle');
+  const copy = async () => {
+    const ok = await copyText(code);
+    setState(ok ? 'ok' : 'fail');
+    if (!ok) document.querySelector<HTMLElement>('.codebox b')?.focus();
+    if (ok) track('cta_click', { day, target: 'copy_' + code });
+    setTimeout(() => setState('idle'), ok ? 2200 : 6000);
+  };
+  const select = (e: React.SyntheticEvent<HTMLElement>) => {
+    const r = document.createRange(); r.selectNodeContents(e.currentTarget);
+    const sel = window.getSelection(); sel?.removeAllRanges(); sel?.addRange(r);
+  };
   return (
     <div className="codebox">
-      <b>{code}</b>
-      <button onClick={async () => { if (await copyText(code)) { setDone(true); track('cta_click', { day, target: 'copy_' + code }); setTimeout(() => setDone(false), 2200); } }}>
-        {done ? <><Check size={14} /> Zkopírováno</> : <><Copy size={14} /> {label}</>}
+      <b onClick={select} onFocus={select} tabIndex={0}>{code}</b>
+      <button onClick={copy}>
+        {state === 'ok' ? <><Check size={14} /> Zkopírováno</> : <><Copy size={14} /> {label}</>}
       </button>
+      {state === 'fail' && <small className="codebox-hint">Kopírování se nepovedlo. Kód je označený, podržte ho a zvolte Kopírovat.</small>}
     </div>
   );
 }
